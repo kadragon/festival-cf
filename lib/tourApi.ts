@@ -5,14 +5,18 @@ const DIRECT_BASE = 'https://apis.data.go.kr/B551011/KorService2'
 // .dev.vars values are exposed via getCloudflareContext().env during `next dev`,
 // and via process.env on the deployed Worker. Read both so the same code works
 // in dev and prod. async: true is required from RSC/SSG paths in dev.
+// CF env wins over process.env, allowing .dev.vars to override host env in dev.
+let cachedEnv: Record<string, string | undefined> | null = null
 async function readEnv(): Promise<Record<string, string | undefined>> {
+  if (cachedEnv) return cachedEnv
   const fromProcess = process.env as Record<string, string | undefined>
   try {
     const { env } = await getCloudflareContext({ async: true })
-    return { ...fromProcess, ...(env as unknown as Record<string, string | undefined>) }
+    cachedEnv = { ...fromProcess, ...(env as unknown as Record<string, string | undefined>) }
   } catch {
-    return fromProcess
+    cachedEnv = fromProcess
   }
+  return cachedEnv
 }
 
 async function buildRequest(
@@ -31,6 +35,9 @@ async function buildRequest(
 
   const proxyUrl = env.OPEN_DATA_API_PROXY_URL
   const proxyKey = env.OPEN_DATA_X_API_KEY
+  if (Boolean(proxyUrl) !== Boolean(proxyKey)) {
+    throw new Error('Both OPEN_DATA_API_PROXY_URL and OPEN_DATA_X_API_KEY must be set together')
+  }
   if (proxyUrl && proxyKey) {
     const base = `${proxyUrl.replace(/\/$/, '')}/KorService2`
     return {
