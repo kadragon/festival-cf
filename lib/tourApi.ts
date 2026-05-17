@@ -1,17 +1,58 @@
-const BASE = 'https://apis.data.go.kr/B551011/KorService2'
+import { getCloudflareContext } from '@opennextjs/cloudflare'
 
-function getKey(): string {
-  const key = process.env.DATA_GO_KR_APIKEY
-  if (!key) throw new Error('DATA_GO_KR_APIKEY not configured')
-  return key
+const DIRECT_BASE = 'https://apis.data.go.kr/B551011/KorService2'
+
+// .dev.vars values are exposed via getCloudflareContext().env during `next dev`,
+// and via process.env on the deployed Worker. Read both so the same code works
+// in dev and prod. async: true is required from RSC/SSG paths in dev.
+// CF env wins over process.env, allowing .dev.vars to override host env in dev.
+let cachedEnv: Record<string, string | undefined> | null = null
+async function readEnv(): Promise<Record<string, string | undefined>> {
+  if (cachedEnv) return cachedEnv
+  const fromProcess = process.env as Record<string, string | undefined>
+  try {
+    const { env } = await getCloudflareContext({ async: true })
+    cachedEnv = { ...fromProcess, ...(env as unknown as Record<string, string | undefined>) }
+  } catch {
+    cachedEnv = fromProcess
+  }
+  return cachedEnv
 }
 
-// serviceKey is already URL-encoded in .env — must NOT re-encode
-function buildUrl(path: string, params: Record<string, string | number>): string {
-  const qs = Object.entries(params)
+async function buildRequest(
+  path: string,
+  params: Record<string, string | number>,
+): Promise<{ url: string; init: RequestInit }> {
+  const env = await readEnv()
+  const commonQs = Object.entries({
+    _type: 'json',
+    MobileOS: 'ETC',
+    MobileApp: 'festival-app',
+    ...params,
+  })
     .map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`)
     .join('&')
-  return `${BASE}${path}?serviceKey=${getKey()}&_type=json&MobileOS=ETC&MobileApp=festival-app&${qs}`
+
+  const proxyUrl = env.OPEN_DATA_API_PROXY_URL
+  const proxyKey = env.OPEN_DATA_X_API_KEY
+  if (Boolean(proxyUrl) !== Boolean(proxyKey)) {
+    throw new Error('Both OPEN_DATA_API_PROXY_URL and OPEN_DATA_X_API_KEY must be set together')
+  }
+  if (proxyUrl && proxyKey) {
+    const base = `${proxyUrl.replace(/\/$/, '')}/KorService2`
+    return {
+      url: `${base}${path}?${commonQs}`,
+      init: { headers: { 'x-api-key': proxyKey } },
+    }
+  }
+
+  const directKey = env.DATA_GO_KR_APIKEY
+  if (!directKey) throw new Error('DATA_GO_KR_APIKEY not configured')
+  // serviceKey is already URL-encoded in .env — must NOT re-encode
+  return {
+    url: `${DIRECT_BASE}${path}?serviceKey=${directKey}&${commonQs}`,
+    init: {},
+  }
 }
 
 function ensureArray<T>(val: T | T[] | '' | null | undefined): T[] {
@@ -96,8 +137,8 @@ export async function fetchFestivalList(params: {
   }
   if (params.areaCode) qp.lDongRegnCd = params.areaCode
 
-  const url = buildUrl('/searchFestival2', qp)
-  const res = await fetch(url, { next: { revalidate: 60 } })
+  const { url, init } = await buildRequest('/searchFestival2', qp)
+  const res = await fetch(url, { ...init, next: { revalidate: 60 } })
   if (!res.ok) throw new Error(`HTTP ${res.status}`)
   const json = await res.json()
 
@@ -112,24 +153,24 @@ export async function fetchFestivalList(params: {
 }
 
 export async function fetchDetailCommon(contentId: string): Promise<DetailCommon | null> {
-  const url = buildUrl('/detailCommon2', { contentId })
-  const res = await fetch(url, { next: { revalidate: 300 } })
+  const { url, init } = await buildRequest('/detailCommon2', { contentId })
+  const res = await fetch(url, { ...init, next: { revalidate: 300 } })
   const json = await res.json()
   const items = ensureArray(json.response?.body?.items?.item)
   return (items[0] as DetailCommon) ?? null
 }
 
 export async function fetchDetailIntro(contentId: string): Promise<DetailIntro | null> {
-  const url = buildUrl('/detailIntro2', { contentId, contentTypeId: '15' })
-  const res = await fetch(url, { next: { revalidate: 300 } })
+  const { url, init } = await buildRequest('/detailIntro2', { contentId, contentTypeId: '15' })
+  const res = await fetch(url, { ...init, next: { revalidate: 300 } })
   const json = await res.json()
   const items = ensureArray(json.response?.body?.items?.item)
   return (items[0] as DetailIntro) ?? null
 }
 
 export async function fetchDetailImages(contentId: string): Promise<DetailImage[]> {
-  const url = buildUrl('/detailImage2', { contentId, imageYN: 'Y', numOfRows: 20, pageNo: 1 })
-  const res = await fetch(url, { next: { revalidate: 300 } })
+  const { url, init } = await buildRequest('/detailImage2', { contentId, imageYN: 'Y', numOfRows: 20, pageNo: 1 })
+  const res = await fetch(url, { ...init, next: { revalidate: 300 } })
   const json = await res.json()
   return ensureArray<DetailImage>(json.response?.body?.items?.item)
 }

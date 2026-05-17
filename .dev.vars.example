@@ -1,2 +1,6 @@
 NEXTJS_ENV=development
 DATA_GO_KR_APIKEY=your_url_encoded_api_key_here
+# Proxy for Cloudflare Workers (foreign egress blocked by data.go.kr).
+# When both set, KorService2 calls route through the proxy and DATA_GO_KR_APIKEY is unused.
+# OPEN_DATA_API_PROXY_URL=https://your-proxy.run.app
+# OPEN_DATA_X_API_KEY=your_proxy_x_api_key
