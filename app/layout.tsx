@@ -3,10 +3,10 @@ import { Black_Han_Sans, Noto_Sans_KR } from 'next/font/google'
 import './globals.css'
 
 const blackHanSans = Black_Han_Sans({
-  subsets: ['latin'],
   weight: '400',
   variable: '--font-black-han',
   display: 'swap',
+  preload: false,
 })
 
 const noto = Noto_Sans_KR({

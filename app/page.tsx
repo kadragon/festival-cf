@@ -52,9 +52,9 @@ export default async function Home({ searchParams }: Props) {
       {/* Hero */}
       <div className="relative overflow-hidden px-4 pb-12 pt-16 md:pb-16 md:pt-24">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute left-[8%] top-[15%] h-72 w-72 rounded-full bg-violet-600/8 blur-3xl" />
+          <div className="absolute left-[8%] top-[15%] h-72 w-72 rounded-full bg-violet-600/10 blur-3xl" />
           <div className="absolute right-[12%] top-[10%] h-56 w-56 rounded-full bg-amber-500/10 blur-3xl" />
-          <div className="absolute bottom-0 left-[35%] h-40 w-96 rounded-full bg-rose-600/6 blur-3xl" />
+          <div className="absolute bottom-0 left-[35%] h-40 w-96 rounded-full bg-rose-600/5 blur-3xl" />
         </div>
 
         <div className="relative z-10 mx-auto max-w-7xl">
@@ -71,7 +71,7 @@ export default async function Home({ searchParams }: Props) {
       </div>
 
       {/* Filter bar */}
-      <div className="sticky top-[53px] z-30 border-b border-white/5 bg-[#080810]/95 px-4 py-3 backdrop-blur-md">
+      <div className="sticky top-[var(--header-h)] z-30 border-b border-white/5 bg-[#080810]/95 px-4 py-3 backdrop-blur-md">
         <div className="mx-auto max-w-7xl">
           <Suspense>
             <AreaFilter />

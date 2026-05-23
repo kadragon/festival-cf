@@ -41,11 +41,11 @@ export default function FestivalGrid({ ongoingItems, upcomingItems, initialHasMo
           ])
           return [...prev, ...data.items.filter((it: FestivalItem) => !seen.has(it.contentid))]
         })
-        pageRef.current++
       }
+      pageRef.current++
       setHasMore(data.hasMore ?? false)
-    } catch {
-      // silent — user can scroll again to retry
+    } catch (err) {
+      console.warn('[FestivalGrid] loadMore failed:', err)
     } finally {
       setLoading(false)
     }

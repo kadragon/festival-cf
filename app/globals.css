@@ -15,6 +15,7 @@
 }
 
 :root {
+  --header-h: 53px;
   --bg: #080810;
   --surface: #10101c;
   --card: #16162a;
