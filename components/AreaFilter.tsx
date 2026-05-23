@@ -8,23 +8,27 @@ export default function AreaFilter() {
   const searchParams = useSearchParams()
   const current = searchParams.get('area') ?? ''
 
-  function handleChange(e: React.ChangeEvent<HTMLSelectElement>) {
+  function select(code: string) {
     const params = new URLSearchParams()
-    if (e.target.value) params.set('area', e.target.value)
+    if (code) params.set('area', code)
     router.push(params.size ? `/?${params}` : '/')
   }
 
   return (
-    <select
-      value={current}
-      onChange={handleChange}
-      className="rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 shadow-sm outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-100"
-    >
+    <div className="scrollbar-hide flex gap-2 overflow-x-auto pb-0.5">
       {AREA_CODES.map((a) => (
-        <option key={a.code} value={a.code}>
+        <button
+          key={a.code}
+          onClick={() => select(a.code)}
+          className={`shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-200 ${
+            current === a.code
+              ? 'bg-amber-500 text-black shadow-[0_0_16px_rgba(245,158,11,0.4)]'
+              : 'border border-white/10 bg-white/5 text-[#8888a8] hover:border-white/20 hover:bg-white/10 hover:text-white'
+          }`}
+        >
           {a.name}
-        </option>
+        </button>
       ))}
-    </select>
+    </div>
   )
 }

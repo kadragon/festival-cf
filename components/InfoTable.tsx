@@ -10,28 +10,33 @@ interface Props {
 function Row({ label, value, icon: Icon }: { label: string; value: string; icon?: React.ElementType }) {
   if (!value) return null
   return (
-    <div className="flex gap-3 py-3 border-b border-zinc-100 last:border-0">
-      {Icon && <Icon className="mt-0.5 h-4 w-4 shrink-0 text-zinc-400" />}
-      {!Icon && <span className="mt-0.5 h-4 w-4 shrink-0" />}
+    <div className="flex gap-3 border-b border-white/5 py-3 last:border-0">
+      {Icon ? (
+        <Icon className="mt-0.5 h-4 w-4 shrink-0 text-amber-500/50" />
+      ) : (
+        <span className="mt-0.5 h-4 w-4 shrink-0" />
+      )}
       <div className="min-w-0">
-        <p className="text-xs text-zinc-400">{label}</p>
-        <p className="mt-0.5 text-sm text-zinc-700 break-words">{value}</p>
+        <p className="text-xs text-[#8888a8]">{label}</p>
+        <p className="mt-0.5 break-words text-sm text-[#f0eee9]">{value}</p>
       </div>
     </div>
   )
 }
 
 export default function InfoTable({ common, intro }: Props) {
-  const mapUrl = common.mapx && common.mapy
-    ? `https://map.kakao.com/link/map/${encodeURIComponent(common.title ?? '')},${common.mapy},${common.mapx}`
-    : null
+  const mapUrl =
+    common.mapx && common.mapy
+      ? `https://map.kakao.com/link/map/${encodeURIComponent(common.title ?? '')},${common.mapy},${common.mapx}`
+      : null
 
   const homepageMatch = common.homepage?.match(/href="([^"]+)"/)
-  const homepageUrl = homepageMatch?.[1] ?? (common.homepage?.startsWith('http') ? common.homepage : null)
+  const homepageUrl =
+    homepageMatch?.[1] ?? (common.homepage?.startsWith('http') ? common.homepage : null)
 
   return (
-    <div className="rounded-2xl border border-zinc-100 bg-white p-4 shadow-sm lg:sticky lg:top-4">
-      <h2 className="mb-1 text-base font-semibold text-zinc-800">행사 정보</h2>
+    <div className="rounded-2xl border border-white/[0.07] bg-[#16162a] p-4 lg:sticky lg:top-24">
+      <h2 className="mb-1 text-base font-semibold text-[#f0eee9]">행사 정보</h2>
       <div>
         {intro?.eventstartdate && (
           <Row
@@ -41,11 +46,21 @@ export default function InfoTable({ common, intro }: Props) {
           />
         )}
         {intro?.eventplace && <Row label="행사장" value={intro.eventplace} icon={MapPin} />}
-        {common.addr1 && <Row label="주소" value={[common.addr1, common.addr2].filter(Boolean).join(' ')} icon={MapPin} />}
-        {intro?.usetimefestival && <Row label="이용 요금" value={intro.usetimefestival} icon={Star} />}
+        {common.addr1 && (
+          <Row
+            label="주소"
+            value={[common.addr1, common.addr2].filter(Boolean).join(' ')}
+            icon={MapPin}
+          />
+        )}
+        {intro?.usetimefestival && (
+          <Row label="이용 요금" value={intro.usetimefestival} icon={Star} />
+        )}
         {intro?.playtime && <Row label="공연 시간" value={intro.playtime} icon={Clock} />}
         {intro?.agelimit && <Row label="관람 연령" value={intro.agelimit} icon={User} />}
-        {intro?.discountinfofestival && <Row label="요금" value={intro.discountinfofestival} icon={Star} />}
+        {intro?.discountinfofestival && (
+          <Row label="요금" value={intro.discountinfofestival} icon={Star} />
+        )}
         {intro?.sponsor1 && (
           <Row
             label="주최"
@@ -71,7 +86,7 @@ export default function InfoTable({ common, intro }: Props) {
             href={mapUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex w-full items-center justify-center gap-2 rounded-xl border border-zinc-200 py-2.5 text-sm text-zinc-600 transition hover:border-orange-300 hover:text-orange-600"
+            className="flex w-full items-center justify-center gap-2 rounded-xl border border-white/10 py-2.5 text-sm text-[#8888a8] transition hover:border-amber-500/40 hover:text-amber-400"
           >
             <MapPin className="h-4 w-4" />
             지도에서 보기
@@ -82,7 +97,7 @@ export default function InfoTable({ common, intro }: Props) {
             href={homepageUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-orange-500 py-2.5 text-sm text-white transition hover:bg-orange-600"
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-amber-500 py-2.5 text-sm font-medium text-black transition hover:bg-amber-400"
           >
             <ExternalLink className="h-4 w-4" />
             공식 홈페이지
