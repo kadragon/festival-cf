@@ -43,6 +43,11 @@ next-env.d.ts
 # OpenNext
 .open-next
 
+# local dev artifacts
+.playwright-mcp/
+.antigravitycli/
+festival-*.png
+
 # wrangler files
 .wrangler
 .dev.vars*

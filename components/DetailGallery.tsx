@@ -10,7 +10,7 @@ export default function DetailGallery({ images }: Props) {
 
   return (
     <div>
-      <h2 className="mb-3 text-base font-semibold text-zinc-800">갤러리</h2>
+      <h2 className="mb-3 text-base font-semibold text-[#f0eee9]">갤러리</h2>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
         {images.slice(0, 9).map((img, i) => (
           <a
@@ -18,7 +18,7 @@ export default function DetailGallery({ images }: Props) {
             href={img.originimgurl}
             target="_blank"
             rel="noopener noreferrer"
-            className="relative block aspect-square overflow-hidden rounded-xl bg-zinc-100"
+            className="relative block aspect-square overflow-hidden rounded-xl bg-white/5"
           >
             <Image
               src={img.smallimageurl || img.originimgurl}

@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
           eventStartDate: today,
           areaCode: area || undefined,
           pageNo: 1,
-          numOfRows: 12,
+          numOfRows: 20,
         }),
       ])
 
@@ -35,18 +35,18 @@ export async function GET(request: NextRequest) {
       const seen = new Set(ongoing.map((it) => it.contentid))
       const upcoming = upcomingRes.items.filter((it) => !seen.has(it.contentid))
 
-      items = [...ongoing, ...upcoming].slice(0, 12)
-      hasMore = upcomingRes.totalCount > 12
+      items = [...ongoing, ...upcoming].slice(0, 20)
+      hasMore = upcomingRes.totalCount > 20
     } else {
       // Subsequent pages: upcoming only (page 1 covered ongoing)
       const res = await fetchFestivalList({
         eventStartDate: today,
         areaCode: area || undefined,
         pageNo: page,
-        numOfRows: 12,
+        numOfRows: 20,
       })
       items = res.items
-      hasMore = res.totalCount > page * 12
+      hasMore = res.totalCount > page * 20
     }
 
     return NextResponse.json({ items, hasMore })

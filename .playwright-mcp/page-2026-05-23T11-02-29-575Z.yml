@@ -1,0 +1,100 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "🏮 Festival Korea" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e5]: 🏮
+        - generic [ref=e6]: Festival Korea
+      - generic [ref=e7]: 전국 행사 정보
+  - main [ref=e9]:
+    - generic [ref=e10]:
+      - img "2026 섬 방문의 해" [ref=e11]
+      - link "목록" [ref=e13] [cursor=pointer]:
+        - /url: /
+        - img [ref=e14]
+        - text: 목록
+      - generic [ref=e16]:
+        - generic [ref=e17]: 진행중
+        - heading "2026 섬 방문의 해" [level=1] [ref=e19]
+        - generic [ref=e20]:
+          - generic [ref=e21]:
+            - img [ref=e22]
+            - text: 전라남도 여수시 선어시장길 6 (중앙동)
+          - generic [ref=e25]:
+            - img [ref=e26]
+            - text: 2026.03.01 — 2026.12.31
+    - generic [ref=e29]:
+      - generic [ref=e30]:
+        - generic [ref=e31]:
+          - heading "행사 소개" [level=2] [ref=e32]
+          - paragraph [ref=e33]: 2026 섬 방문의 해는 대한민국 섬이 지닌 생태·문화적 자산을 새롭게 조명하고, 대한민국을 세계가 주목하는 섬 관광 강국으로의 도약을 본격화한다. 특히, 2026년은 세계 최초로 섬을 주제로 개최되는 '2026 여수세계섬박람회'와 연계하여 더욱 풍성한 볼거리와 즐길거리를 제공한다. 박람회의 열기를 전국 섬으로 확산시키고, 섬 여행비 지원 프로모션부터 문화 주간 행사 등 2026년 한 해 동안 펼쳐지는 다채로운 프로그램을 통해 섬이 선사하는 진정한 휴식과 새로운 활력을 직접 경험할 수 있다.
+        - generic [ref=e34]:
+          - heading "갤러리" [level=2] [ref=e35]
+          - generic [ref=e36]:
+            - link "2026 섬 방문의 해 (1).JPG" [ref=e37] [cursor=pointer]:
+              - /url: https://tong.visitkorea.or.kr/cms/resource/14/4067314_image2_1.JPG
+              - img "2026 섬 방문의 해 (1).JPG" [ref=e38]
+            - link "2026 섬 방문의 해 (2).JPG" [ref=e39] [cursor=pointer]:
+              - /url: https://tong.visitkorea.or.kr/cms/resource/15/4067315_image2_1.JPG
+              - img "2026 섬 방문의 해 (2).JPG" [ref=e40]
+            - link "2026 섬 방문의 해 (3).JPG" [ref=e41] [cursor=pointer]:
+              - /url: https://tong.visitkorea.or.kr/cms/resource/16/4067316_image2_1.JPG
+              - img "2026 섬 방문의 해 (3).JPG" [ref=e42]
+      - generic [ref=e44]:
+        - heading "행사 정보" [level=2] [ref=e45]
+        - generic [ref=e46]:
+          - generic [ref=e47]:
+            - img [ref=e48]
+            - generic [ref=e51]:
+              - paragraph [ref=e52]: 기간
+              - paragraph [ref=e53]: 2026.03.01 — 2026.12.31
+          - generic [ref=e54]:
+            - img [ref=e55]
+            - generic [ref=e58]:
+              - paragraph [ref=e59]: 행사장
+              - paragraph [ref=e60]: 온라인 행사
+          - generic [ref=e61]:
+            - img [ref=e62]
+            - generic [ref=e65]:
+              - paragraph [ref=e66]: 주소
+              - paragraph [ref=e67]: 전라남도 여수시 선어시장길 6 (중앙동)
+          - generic [ref=e68]:
+            - img [ref=e69]
+            - generic [ref=e71]:
+              - paragraph [ref=e72]: 이용 요금
+              - paragraph [ref=e73]: 무료
+          - generic [ref=e74]:
+            - img [ref=e75]
+            - generic [ref=e78]:
+              - paragraph [ref=e79]: 공연 시간
+              - paragraph [ref=e80]: 행사 별로 상이함
+          - generic [ref=e81]:
+            - img [ref=e82]
+            - generic [ref=e85]:
+              - paragraph [ref=e86]: 관람 연령
+              - paragraph [ref=e87]: 전 연령
+          - generic [ref=e88]:
+            - img [ref=e89]
+            - generic [ref=e92]:
+              - paragraph [ref=e93]: 주최
+              - paragraph [ref=e94]: 행정안전부 070-4337-5058
+          - generic [ref=e95]:
+            - img [ref=e96]
+            - generic [ref=e99]:
+              - paragraph [ref=e100]: 주관
+              - paragraph [ref=e101]: 한국섬진흥원
+          - generic [ref=e102]:
+            - img [ref=e103]
+            - generic [ref=e105]:
+              - paragraph [ref=e106]: 문의
+              - paragraph [ref=e107]: 070-4337-5058
+          - generic [ref=e110]:
+            - paragraph [ref=e111]: 주요 프로그램
+            - paragraph [ref=e112]: "- 오프라인 프로그램 : 선포식 - 온라인 프로그램 : 섬 여행비 지원 프로모션 / 찾아가고 싶은 섬 이벤트 / 1인 1섬 이벤트 등"
+        - link "지도에서 보기" [ref=e114] [cursor=pointer]:
+          - /url: https://map.kakao.com/link/map/2026%20%EC%84%AC%20%EB%B0%A9%EB%AC%B8%EC%9D%98%20%ED%95%B4,34.7395781561546,127.736371787128
+          - img [ref=e115]
+          - text: 지도에서 보기
+  - button "Open Next.js Dev Tools" [ref=e123] [cursor=pointer]:
+    - img [ref=e124]
+  - alert [ref=e127]
