@@ -1,6 +1,8 @@
 'use client'
 
-import { useEffect } from 'react'
+import { startTransition, useEffect } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 interface Props {
   error: Error & { digest?: string }
@@ -8,9 +10,18 @@ interface Props {
 }
 
 export default function FestivalDetailError({ error, reset }: Props) {
+  const router = useRouter()
+
   useEffect(() => {
     console.error('[FestivalDetail]', error)
   }, [error])
+
+  function handleReset() {
+    startTransition(() => {
+      router.refresh()
+      reset()
+    })
+  }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-6 px-4">
@@ -21,17 +32,17 @@ export default function FestivalDetailError({ error, reset }: Props) {
       </div>
       <div className="flex gap-3">
         <button
-          onClick={reset}
+          onClick={handleReset}
           className="rounded-full border border-white/20 bg-white/5 px-5 py-2 text-sm text-[#f0eee9] transition hover:bg-white/10"
         >
           다시 시도
         </button>
-        <a
+        <Link
           href="/"
           className="rounded-full border border-white/20 bg-white/5 px-5 py-2 text-sm text-[#8888a8] transition hover:bg-white/10"
         >
           목록으로
-        </a>
+        </Link>
       </div>
     </main>
   )

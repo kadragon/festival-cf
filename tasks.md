@@ -8,3 +8,7 @@ _No active sprint. Items queued in `backlog.md`._
 
 - [ ] [debt] Add `contentId` to error messages in fetchDetailCommon/Intro/Images for debuggability (source: pr-review-toolkit:review-pr) — `lib/tourApi.ts:158,167,176`
 - [ ] [debt] Add `app/error.tsx` boundary for festival detail page (source: pr-review-toolkit:review-pr) — already tracked in `backlog.md` Someday
+
+### PR #5 — [REFACTOR] narrow catch + typed CF env extraction in readEnv (2026-05-27)
+
+- [ ] [harness] Add `push: branches: [main]` trigger to CI workflow — post-merge integrity currently unguarded (source: pr-review-toolkit:review-pr) — `.github/workflows/ci.yml:4`

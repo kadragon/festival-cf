@@ -2,6 +2,9 @@ import { getCloudflareContext } from '@opennextjs/cloudflare'
 
 const DIRECT_BASE = 'https://apis.data.go.kr/B551011/KorService2'
 
+// Single source of truth for CF env keys used by this module.
+const CF_ENV_KEYS = ['DATA_GO_KR_APIKEY', 'OPEN_DATA_API_PROXY_URL', 'OPEN_DATA_X_API_KEY'] as const
+
 // .dev.vars values are exposed via getCloudflareContext().env during `next dev`,
 // and via process.env on the deployed Worker. Read both so the same code works
 // in dev and prod. async: true is required from RSC/SSG paths in dev.
@@ -12,17 +15,19 @@ async function readEnv(): Promise<Record<string, string | undefined>> {
   const fromProcess = process.env as Record<string, string | undefined>
   try {
     const { env } = await getCloudflareContext({ async: true })
-    // Extract known string vars — avoids double cast through `unknown`
+    const envObj = (env || {}) as Record<string, unknown>
     const cfVars: Record<string, string | undefined> = {}
-    for (const key of ['DATA_GO_KR_APIKEY', 'OPEN_DATA_API_PROXY_URL', 'OPEN_DATA_X_API_KEY']) {
-      const val = (env as Record<string, unknown>)[key]
+    for (const key of CF_ENV_KEYS) {
+      const val = envObj[key]
       if (typeof val === 'string') cfVars[key] = val
     }
     cachedEnv = { ...fromProcess, ...cfVars }
   } catch (err) {
     // Expected when not in Workers runtime (e.g. pure Node dev or unit tests).
-    // Log unexpected errors so SDK bugs don't disappear silently.
-    console.warn('[tourApi] getCloudflareContext failed, falling back to process.env:', err)
+    // Only log genuinely unexpected errors so SDK bugs don't disappear silently.
+    if (!(err instanceof Error) || !err.message.toLowerCase().includes('cloudflare')) {
+      console.warn('[tourApi] getCloudflareContext failed, falling back to process.env:', err)
+    }
     cachedEnv = fromProcess
   }
   return cachedEnv
