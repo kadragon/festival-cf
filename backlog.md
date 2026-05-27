@@ -11,5 +11,5 @@
 
 ## Someday
 
-- [ ] Add CI workflow (`pnpm build:worker` + `npx tsc --noEmit`) on every PR
-- [ ] Add error boundaries to festival detail page
+- [x] Add CI workflow (`pnpm build:worker` + `npx tsc --noEmit`) on every PR
+- [x] Add error boundaries to festival detail page
