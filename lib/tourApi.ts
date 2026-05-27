@@ -155,6 +155,7 @@ export async function fetchFestivalList(params: {
 export async function fetchDetailCommon(contentId: string): Promise<DetailCommon | null> {
   const { url, init } = await buildRequest('/detailCommon2', { contentId })
   const res = await fetch(url, { ...init, next: { revalidate: 300 } })
+  if (!res.ok) throw new Error(`HTTP ${res.status}`)
   const json = await res.json()
   const items = ensureArray(json.response?.body?.items?.item)
   return (items[0] as DetailCommon) ?? null
@@ -163,6 +164,7 @@ export async function fetchDetailCommon(contentId: string): Promise<DetailCommon
 export async function fetchDetailIntro(contentId: string): Promise<DetailIntro | null> {
   const { url, init } = await buildRequest('/detailIntro2', { contentId, contentTypeId: '15' })
   const res = await fetch(url, { ...init, next: { revalidate: 300 } })
+  if (!res.ok) throw new Error(`HTTP ${res.status}`)
   const json = await res.json()
   const items = ensureArray(json.response?.body?.items?.item)
   return (items[0] as DetailIntro) ?? null
@@ -171,6 +173,7 @@ export async function fetchDetailIntro(contentId: string): Promise<DetailIntro |
 export async function fetchDetailImages(contentId: string): Promise<DetailImage[]> {
   const { url, init } = await buildRequest('/detailImage2', { contentId, imageYN: 'Y', numOfRows: 20, pageNo: 1 })
   const res = await fetch(url, { ...init, next: { revalidate: 300 } })
+  if (!res.ok) throw new Error(`HTTP ${res.status}`)
   const json = await res.json()
   return ensureArray<DetailImage>(json.response?.body?.items?.item)
 }
