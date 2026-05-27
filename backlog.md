@@ -6,10 +6,10 @@
 
 ## Next
 
-- [ ] `lib/tourApi.ts` — Narrow bare `catch {}` in `readEnv` to log unexpected errors via `console.warn` (currently swallows SDK bugs silently)
-- [ ] `lib/tourApi.ts` — Replace `env as unknown as Record<string, string | undefined>` double cast with typed env var extraction
+- [x] `lib/tourApi.ts` — Narrow bare `catch {}` in `readEnv` to log unexpected errors via `console.warn` (currently swallows SDK bugs silently)
+- [x] `lib/tourApi.ts` — Replace `env as unknown as Record<string, string | undefined>` double cast with typed env var extraction
 
 ## Someday
 
-- [ ] Add CI workflow (`pnpm build:worker` + `npx tsc --noEmit`) on every PR
-- [ ] Add error boundaries to festival detail page
+- [x] Add CI workflow (`pnpm build:worker` + `npx tsc --noEmit`) on every PR
+- [x] Add error boundaries to festival detail page
