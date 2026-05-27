@@ -12,8 +12,17 @@ async function readEnv(): Promise<Record<string, string | undefined>> {
   const fromProcess = process.env as Record<string, string | undefined>
   try {
     const { env } = await getCloudflareContext({ async: true })
-    cachedEnv = { ...fromProcess, ...(env as unknown as Record<string, string | undefined>) }
-  } catch {
+    // Extract known string vars — avoids double cast through `unknown`
+    const cfVars: Record<string, string | undefined> = {}
+    for (const key of ['DATA_GO_KR_APIKEY', 'OPEN_DATA_API_PROXY_URL', 'OPEN_DATA_X_API_KEY']) {
+      const val = (env as Record<string, unknown>)[key]
+      if (typeof val === 'string') cfVars[key] = val
+    }
+    cachedEnv = { ...fromProcess, ...cfVars }
+  } catch (err) {
+    // Expected when not in Workers runtime (e.g. pure Node dev or unit tests).
+    // Log unexpected errors so SDK bugs don't disappear silently.
+    console.warn('[tourApi] getCloudflareContext failed, falling back to process.env:', err)
     cachedEnv = fromProcess
   }
   return cachedEnv

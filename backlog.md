@@ -6,8 +6,8 @@
 
 ## Next
 
-- [ ] `lib/tourApi.ts` — Narrow bare `catch {}` in `readEnv` to log unexpected errors via `console.warn` (currently swallows SDK bugs silently)
-- [ ] `lib/tourApi.ts` — Replace `env as unknown as Record<string, string | undefined>` double cast with typed env var extraction
+- [x] `lib/tourApi.ts` — Narrow bare `catch {}` in `readEnv` to log unexpected errors via `console.warn` (currently swallows SDK bugs silently)
+- [x] `lib/tourApi.ts` — Replace `env as unknown as Record<string, string | undefined>` double cast with typed env var extraction
 
 ## Someday
 
