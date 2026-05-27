@@ -157,6 +157,7 @@ export async function fetchDetailCommon(contentId: string): Promise<DetailCommon
   const res = await fetch(url, { ...init, next: { revalidate: 300 } })
   if (!res.ok) throw new Error(`HTTP ${res.status}`)
   const json = await res.json()
+  if (json.response?.header?.resultCode !== '0000') throw new Error(json.response?.header?.resultMsg ?? 'API error')
   const items = ensureArray(json.response?.body?.items?.item)
   return (items[0] as DetailCommon) ?? null
 }
@@ -166,6 +167,7 @@ export async function fetchDetailIntro(contentId: string): Promise<DetailIntro |
   const res = await fetch(url, { ...init, next: { revalidate: 300 } })
   if (!res.ok) throw new Error(`HTTP ${res.status}`)
   const json = await res.json()
+  if (json.response?.header?.resultCode !== '0000') throw new Error(json.response?.header?.resultMsg ?? 'API error')
   const items = ensureArray(json.response?.body?.items?.item)
   return (items[0] as DetailIntro) ?? null
 }
@@ -175,5 +177,6 @@ export async function fetchDetailImages(contentId: string): Promise<DetailImage[
   const res = await fetch(url, { ...init, next: { revalidate: 300 } })
   if (!res.ok) throw new Error(`HTTP ${res.status}`)
   const json = await res.json()
+  if (json.response?.header?.resultCode !== '0000') throw new Error(json.response?.header?.resultMsg ?? 'API error')
   return ensureArray<DetailImage>(json.response?.body?.items?.item)
 }

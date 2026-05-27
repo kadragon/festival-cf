@@ -72,7 +72,7 @@ Production env vars → Cloudflare dashboard → Settings → Variables and Secr
 |---------|-------------|-----|
 | `DATA_GO_KR_APIKEY not configured` | Missing env var | Check `.dev.vars` or CF dashboard |
 | Both proxy vars must be set together | One of the pair missing | Set both or remove both |
-| `res.json()` throws on fetch | `res.ok` not checked; API returned HTML 4xx/5xx | Add `res.ok` check (see `backlog.md`) |
+| `res.json()` throws on fetch | `res.ok` not checked; API returned HTML 4xx/5xx | Fixed in `lib/tourApi.ts` — all fetch calls check `res.ok` |
 | TypeScript errors in `cloudflare-env.d.ts` | Missing CF type gen | Run `pnpm cf-typegen` |
 | Build fails with "not supported in Workers" | Node-only API used | Check CF Workers compat |
 

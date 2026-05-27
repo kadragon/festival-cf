@@ -2,7 +2,7 @@
 
 ## Now
 
-- [ ] `lib/tourApi.ts` — Add `res.ok` checks to `fetchDetailCommon`, `fetchDetailIntro`, `fetchDetailImages` (pre-existing gap; proxy adds extra failure surface where non-200 returns HTML and `res.json()` throws)
+- [x] `lib/tourApi.ts` — Add `res.ok` checks to `fetchDetailCommon`, `fetchDetailIntro`, `fetchDetailImages` (pre-existing gap; proxy adds extra failure surface where non-200 returns HTML and `res.json()` throws)
 
 ## Next
 
