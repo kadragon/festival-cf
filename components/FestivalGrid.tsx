@@ -32,6 +32,7 @@ export default function FestivalGrid({ ongoingItems, upcomingItems, initialHasMo
       const params = new URLSearchParams({ page: String(pageRef.current) })
       if (area) params.set('area', area)
       const res = await fetch(`/api/festivals?${params}`)
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const data = (await res.json()) as { items?: FestivalItem[]; hasMore?: boolean }
       const newItems = data.items ?? []
       if (newItems.length) {
