@@ -17,5 +17,20 @@
 			"id": "419a5a74e380435192cc9e5e909820bf",
 			"preview_id": "4b177ea53a2f48c591523f71d12acad8"
 		}
-	]
+	],
+	"minify": true,
+	"keep_vars": false,
+	"limits": {
+		"cpu_ms": 30000
+	},
+	"observability": {
+		"logs": {
+			"enabled": true,
+			"head_sampling_rate": 1,
+			"invocation_logs": true
+		}
+	},
+	"placement": {
+		"mode": "smart"
+	}
 }
