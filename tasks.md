@@ -4,6 +4,11 @@ _No active sprint. Items queued in `backlog.md`._
 
 ## Review Backlog
 
+### PR #9 — [FIX] region codes + KV incremental cache (2026-06-13)
+
+- [ ] [debt] `ensureArray<T>` widened to `val: unknown` with internal `as T[]` cast — unsound: a TourAPI item not matching T propagates silently. Acceptable for external-JSON parsing, but a runtime shape-check or type predicate would be safer (source: pr-review-toolkit:review-pr, P3) — `lib/tourApi.ts:72`
+- [ ] [debt] `const body = json.response?.body` uses a redundant optional chain — after the `resultCode` guard, `json.response` is statically guaranteed non-null. Cosmetic type-expressiveness only, zero runtime impact (verifier-confirmed P3) (source: pr-review-toolkit:review-pr) — `lib/tourApi.ts:162`
+
 ### PR #8 — [FIX] include today-start festivals, sort upcoming by date, add contentId to detail errors (2026-06-13)
 
 - [ ] [debt] Null-guard the new `.sort()` localeCompare calls — `(a.eventstartdate ?? '').localeCompare(b.eventstartdate ?? '')`; throws if TourAPI ever returns an item with missing `eventstartdate` (low confidence — required field, near-always present) (source: pr-review-toolkit:review-pr) — `app/api/festivals/route.ts:38,50`, `app/page.tsx:36`
