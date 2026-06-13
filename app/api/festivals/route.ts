@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
     let hasMore: boolean
 
     if (page === 1) {
-      // Concurrent: ongoing (started before today) + upcoming (start from today)
+      // Concurrent: ongoing (started on/before today) + upcoming (start from today)
       const [ongoingRes, upcomingRes] = await Promise.all([
         fetchFestivalList({
           eventStartDate: daysAgoStr(180),
@@ -30,10 +30,12 @@ export async function GET(request: NextRequest) {
       ])
 
       const ongoing = ongoingRes.items.filter(
-        (it) => it.eventstartdate < today && it.eventenddate >= today
+        (it) => it.eventstartdate <= today && it.eventenddate >= today
       )
       const seen = new Set(ongoing.map((it) => it.contentid))
-      const upcoming = upcomingRes.items.filter((it) => !seen.has(it.contentid))
+      const upcoming = upcomingRes.items
+        .filter((it) => !seen.has(it.contentid))
+        .sort((a, b) => a.eventstartdate.localeCompare(b.eventstartdate))
 
       items = [...ongoing, ...upcoming].slice(0, 20)
       hasMore = upcomingRes.totalCount > 20
@@ -45,7 +47,7 @@ export async function GET(request: NextRequest) {
         pageNo: page,
         numOfRows: 20,
       })
-      items = res.items
+      items = res.items.sort((a, b) => a.eventstartdate.localeCompare(b.eventstartdate))
       hasMore = res.totalCount > page * 20
     }
 

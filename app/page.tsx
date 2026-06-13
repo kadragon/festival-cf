@@ -28,10 +28,12 @@ async function FestivalSection({ area }: { area: string }) {
   ])
 
   const ongoing = ongoingRes.items.filter(
-    (it) => it.eventstartdate < today && it.eventenddate >= today
+    (it) => it.eventstartdate <= today && it.eventenddate >= today
   )
   const seen = new Set(ongoing.map((it) => it.contentid))
-  const upcoming = upcomingRes.items.filter((it) => !seen.has(it.contentid))
+  const upcoming = upcomingRes.items
+    .filter((it) => !seen.has(it.contentid))
+    .sort((a, b) => a.eventstartdate.localeCompare(b.eventstartdate))
 
   return (
     <FestivalGrid

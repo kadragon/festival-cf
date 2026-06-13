@@ -4,19 +4,12 @@ _No active sprint. Items queued in `backlog.md`._
 
 ## Review Backlog
 
-### PR #4 — [FIX] add res.ok checks to fetchDetailCommon, fetchDetailIntro, fetchDetailImages (2026-05-27)
+_All review-backlog items resolved 2026-06-13._
 
-- [ ] [debt] Add `contentId` to error messages in fetchDetailCommon/Intro/Images for debuggability (source: pr-review-toolkit:review-pr) — `lib/tourApi.ts:158,167,176`
-- [ ] [debt] Add `app/error.tsx` boundary for festival detail page (source: pr-review-toolkit:review-pr) — already tracked in `backlog.md` Someday
+### PR #6 — ws vulnerability check (resolved)
 
-### PR #5 — [REFACTOR] narrow catch + typed CF env extraction in readEnv (2026-05-27)
+- `ws@8.18.0` GHSA-58qx-3vcg-4xpx: checked GitHub Dependabot alerts — **not flagged**, no override added. Re-evaluate only if a future alert appears.
 
-- [ ] [harness] Add `push: branches: [main]` trigger to CI workflow — post-merge integrity currently unguarded (source: pr-review-toolkit:review-pr) — `.github/workflows/ci.yml:4`
+### Out of scope (noted, not actioned)
 
-### PR #6 — [FIX] force postcss >=8.5.10 and qs >=6.15.2 via pnpm overrides (2026-06-02)
-
-- [ ] [debt] `ws@8.18.0` may be vulnerable to GHSA-58qx-3vcg-4xpx (uninitialized memory disclosure); verify against GitHub Dependabot alerts and add `ws: ">=8.20.1"` override if confirmed (source: agy) — `pnpm-workspace.yaml`
-
-### PR #7 — [REFACTOR] redesign UI to Festival Gazette editorial theme (2026-06-13)
-
-- [ ] [debt] Ticket-perforation notch circles fake a cutout via `bg-paper`; silently break if a card renders on any non-paper surface (modal, colored wrapper). Replace with SVG clip-path/mask or add a comment documenting the bg-paper dependency (source: pr-review-toolkit:review-pr, P3) — `components/FestivalCard.tsx:55`
+- Dependabot open alert: `esbuild` (GHSA-g7r4-m6w7-qqqr, low, `>= 0.27.3, < 0.28.1`) — transitive dep, not in any PR backlog. Add to `backlog.md` if you want it tracked.

@@ -50,6 +50,9 @@ export default function FestivalCard({ item }: Props) {
       </div>
 
       {/* Perforation */}
+      {/* Notch circles fake a ticket cutout by painting bg-paper over the card edge.
+          This assumes the card sits on the bg-paper page surface; on any other
+          background (modal, colored wrapper) the circles will not blend. */}
       <div className="relative h-0">
         <div className="absolute inset-x-3 top-0 border-t-2 border-dashed border-line" />
         <span className="absolute -left-[9px] top-0 h-4 w-4 -translate-y-1/2 rounded-full border-2 border-ink/20 bg-paper" />
