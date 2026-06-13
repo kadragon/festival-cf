@@ -16,3 +16,7 @@ _No active sprint. Items queued in `backlog.md`._
 ### PR #6 — [FIX] force postcss >=8.5.10 and qs >=6.15.2 via pnpm overrides (2026-06-02)
 
 - [ ] [debt] `ws@8.18.0` may be vulnerable to GHSA-58qx-3vcg-4xpx (uninitialized memory disclosure); verify against GitHub Dependabot alerts and add `ws: ">=8.20.1"` override if confirmed (source: agy) — `pnpm-workspace.yaml`
+
+### PR #7 — [REFACTOR] redesign UI to Festival Gazette editorial theme (2026-06-13)
+
+- [ ] [debt] Ticket-perforation notch circles fake a cutout via `bg-paper`; silently break if a card renders on any non-paper surface (modal, colored wrapper). Replace with SVG clip-path/mask or add a comment documenting the bg-paper dependency (source: pr-review-toolkit:review-pr, P3) — `components/FestivalCard.tsx:55`

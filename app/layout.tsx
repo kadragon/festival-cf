@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { Black_Han_Sans, Noto_Serif_KR, Space_Mono } from 'next/font/google'
-import { formatDate, todayStr } from '@/lib/date'
 import './globals.css'
 
 const blackHanSans = Black_Han_Sans({
@@ -12,7 +11,7 @@ const blackHanSans = Black_Han_Sans({
 
 const notoSerif = Noto_Serif_KR({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '900'],
+  weight: ['400', '500', '600', '700'],
   variable: '--font-noto-serif',
   display: 'swap',
 })
@@ -30,7 +29,11 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const today = formatDate(todayStr())
+  // Asia/Seoul calendar day — UTC-based date would show yesterday between
+  // 00:00–08:59 KST. en-CA yields YYYY-MM-DD; reformat to the gazette's dot style.
+  const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul' })
+    .format(new Date())
+    .replace(/-/g, '.')
 
   return (
     <html lang="ko">

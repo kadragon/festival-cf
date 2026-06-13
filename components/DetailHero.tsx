@@ -46,7 +46,7 @@ export default function DetailHero({ common, intro }: Props) {
       </Link>
 
       {/* Title area */}
-      <div className="absolute inset-x-0 bottom-0 mx-auto max-w-7xl p-6">
+      <div className="absolute inset-x-0 bottom-0 mx-auto max-w-7xl px-4 pb-6">
         {status && <DateBadge status={status} className="mb-3" />}
         <h1 className="mb-3 font-display text-3xl leading-[1.02] tracking-tight text-paper md:text-5xl lg:text-6xl">
           {common.title}
