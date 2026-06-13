@@ -9,6 +9,12 @@ interface Props {
   item: FestivalItem
 }
 
+const accentByStatus = {
+  ongoing: 'bg-vermilion',
+  upcoming: 'bg-cheong',
+  ended: 'bg-ink-soft',
+}
+
 export default function FestivalCard({ item }: Props) {
   const status = festivalStatus(item.eventstartdate, item.eventenddate)
   const location = item.addr1?.split(' ').slice(0, 2).join(' ') ?? ''
@@ -16,10 +22,10 @@ export default function FestivalCard({ item }: Props) {
   return (
     <Link
       href={`/festivals/${item.contentid}`}
-      className="group block overflow-hidden rounded-2xl border border-white/[0.07] bg-[#16162a] transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/30 hover:shadow-[0_8px_32px_rgba(245,158,11,0.12)]"
+      className="group relative block rounded-md border-2 border-ink/20 bg-card transition-all duration-300 hover:-translate-y-1.5 hover:border-vermilion hover:shadow-[5px_6px_0_rgba(33,26,16,0.22)]"
     >
-      {/* Image */}
-      <div className="relative aspect-[4/3] overflow-hidden">
+      {/* Ticket — image stub */}
+      <div className="relative aspect-[4/3] overflow-hidden rounded-t-[4px]">
         {item.firstimage ? (
           <>
             <Image
@@ -29,31 +35,40 @@ export default function FestivalCard({ item }: Props) {
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
               className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink/25 to-transparent" />
           </>
         ) : (
-          <div className="flex h-full items-center justify-center bg-gradient-to-br from-violet-900/40 to-amber-900/20">
-            <span className="text-5xl opacity-30">🎪</span>
+          <div className="flex h-full items-center justify-center bg-paper-2">
+            <span className="font-display text-3xl text-ink/15">축제</span>
           </div>
         )}
         <div className="absolute right-2.5 top-2.5">
           <DateBadge status={status} />
         </div>
+        {/* status accent rail */}
+        <span className={`absolute left-0 top-0 h-full w-1.5 ${accentByStatus[status]}`} />
       </div>
 
-      {/* Info */}
-      <div className="p-4">
-        <h3 className="mb-3 line-clamp-2 text-sm font-semibold leading-snug text-[#f0eee9] transition-colors group-hover:text-amber-400">
+      {/* Perforation */}
+      <div className="relative h-0">
+        <div className="absolute inset-x-3 top-0 border-t-2 border-dashed border-line" />
+        <span className="absolute -left-[9px] top-0 h-4 w-4 -translate-y-1/2 rounded-full border-2 border-ink/20 bg-paper" />
+        <span className="absolute -right-[9px] top-0 h-4 w-4 -translate-y-1/2 rounded-full border-2 border-ink/20 bg-paper" />
+      </div>
+
+      {/* Info stub */}
+      <div className="p-4 pt-5">
+        <h3 className="mb-3 line-clamp-2 font-serif text-[15px] font-bold leading-snug text-ink transition-colors group-hover:text-vermilion">
           {item.title}
         </h3>
         {location && (
-          <p className="mb-1.5 flex items-center gap-1.5 text-xs text-[#8888a8]">
-            <MapPin className="h-3 w-3 shrink-0 text-amber-500/60" />
+          <p className="mb-1.5 flex items-center gap-1.5 font-mono text-[11px] text-ink-soft">
+            <MapPin className="h-3 w-3 shrink-0 text-vermilion/70" />
             <span className="truncate">{location}</span>
           </p>
         )}
-        <p className="flex items-center gap-1.5 text-xs text-[#8888a8]">
-          <Calendar className="h-3 w-3 shrink-0 text-amber-500/60" />
+        <p className="flex items-center gap-1.5 font-mono text-[11px] text-ink-soft">
+          <Calendar className="h-3 w-3 shrink-0 text-vermilion/70" />
           {formatDate(item.eventstartdate)} — {formatDate(item.eventenddate)}
         </p>
       </div>

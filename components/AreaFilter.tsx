@@ -20,10 +20,10 @@ export default function AreaFilter() {
         <button
           key={a.code}
           onClick={() => select(a.code)}
-          className={`shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-200 ${
+          className={`shrink-0 border-2 px-3.5 py-1 font-mono text-[12px] font-bold uppercase tracking-wide transition-all duration-200 ${
             current === a.code
-              ? 'bg-amber-500 text-black shadow-[0_0_16px_rgba(245,158,11,0.4)]'
-              : 'border border-white/10 bg-white/5 text-[#8888a8] hover:border-white/20 hover:bg-white/10 hover:text-white'
+              ? 'border-ink bg-ink text-paper shadow-[2px_2px_0_var(--color-vermilion)]'
+              : 'border-ink/20 bg-card text-ink-soft hover:border-ink hover:text-ink'
           }`}
         >
           {a.name}

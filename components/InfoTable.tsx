@@ -10,15 +10,15 @@ interface Props {
 function Row({ label, value, icon: Icon }: { label: string; value: string; icon?: React.ElementType }) {
   if (!value) return null
   return (
-    <div className="flex gap-3 border-b border-white/5 py-3 last:border-0">
+    <div className="flex gap-3 border-b border-line py-3 last:border-0">
       {Icon ? (
-        <Icon className="mt-0.5 h-4 w-4 shrink-0 text-amber-500/50" />
+        <Icon className="mt-0.5 h-4 w-4 shrink-0 text-vermilion/70" />
       ) : (
         <span className="mt-0.5 h-4 w-4 shrink-0" />
       )}
       <div className="min-w-0">
-        <p className="text-xs text-[#8888a8]">{label}</p>
-        <p className="mt-0.5 break-words text-sm text-[#f0eee9]">{value}</p>
+        <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-soft">{label}</p>
+        <p className="mt-0.5 break-words font-serif text-sm text-ink">{value}</p>
       </div>
     </div>
   )
@@ -35,8 +35,8 @@ export default function InfoTable({ common, intro }: Props) {
     homepageMatch?.[1] ?? (common.homepage?.startsWith('http') ? common.homepage : null)
 
   return (
-    <div className="rounded-2xl border border-white/[0.07] bg-[#16162a] p-4 lg:sticky lg:top-24">
-      <h2 className="mb-1 text-base font-semibold text-[#f0eee9]">행사 정보</h2>
+    <div className="rounded-md border-2 border-ink/20 bg-card p-4 shadow-[4px_5px_0_rgba(33,26,16,0.14)] lg:sticky lg:top-24">
+      <h2 className="mb-2 border-b-2 border-ink pb-2 font-display text-lg text-ink">행사 정보</h2>
       <div>
         {intro?.eventstartdate && (
           <Row
@@ -86,7 +86,7 @@ export default function InfoTable({ common, intro }: Props) {
             href={mapUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex w-full items-center justify-center gap-2 rounded-xl border border-white/10 py-2.5 text-sm text-[#8888a8] transition hover:border-amber-500/40 hover:text-amber-400"
+            className="flex w-full items-center justify-center gap-2 rounded-md border-2 border-ink/20 py-2.5 font-mono text-xs font-bold uppercase tracking-wide text-ink-soft transition hover:border-ink hover:text-ink"
           >
             <MapPin className="h-4 w-4" />
             지도에서 보기
@@ -97,7 +97,7 @@ export default function InfoTable({ common, intro }: Props) {
             href={homepageUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-amber-500 py-2.5 text-sm font-medium text-black transition hover:bg-amber-400"
+            className="flex w-full items-center justify-center gap-2 rounded-md border-2 border-ink bg-vermilion py-2.5 font-mono text-xs font-bold uppercase tracking-wide text-paper shadow-[3px_3px_0_var(--color-ink)] transition hover:bg-vermilion-deep"
           >
             <ExternalLink className="h-4 w-4" />
             공식 홈페이지

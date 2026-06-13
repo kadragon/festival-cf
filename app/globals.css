@@ -2,7 +2,20 @@
 
 @theme {
   --font-display: var(--font-black-han), sans-serif;
-  --font-sans: var(--font-noto), 'Noto Sans KR', -apple-system, sans-serif;
+  --font-serif: var(--font-noto-serif), 'Noto Serif KR', serif;
+  --font-mono: var(--font-space-mono), 'SFMono-Regular', monospace;
+
+  /* Festival Gazette — warm paper + dancheon palette */
+  --color-paper: #f1e7d3;
+  --color-paper-2: #e8dabf;
+  --color-card: #fbf5e7;
+  --color-ink: #211a10;
+  --color-ink-soft: #6f6450;
+  --color-vermilion: #d83a1b;
+  --color-vermilion-deep: #ad2c12;
+  --color-cheong: #16695a;
+  --color-marigold: #cf9325;
+  --color-line: #ccbb98;
 }
 
 @layer utilities {
@@ -15,25 +28,56 @@
 }
 
 :root {
-  --header-h: 53px;
-  --bg: #080810;
-  --surface: #10101c;
-  --card: #16162a;
-  --card-hover: #1c1c35;
-  --border: rgba(255, 255, 255, 0.07);
-  --border-gold: rgba(245, 158, 11, 0.35);
-  --gold: #f59e0b;
-  --gold-glow: rgba(245, 158, 11, 0.15);
-  --text: #f0eee9;
-  --muted: #8888a8;
-  --emerald: #34d399;
-  --blue: #60a5fa;
+  --header-h: 65px;
 }
 
 body {
-  font-family: var(--font-sans);
-  background-color: var(--bg);
-  color: var(--text);
+  font-family: var(--font-serif);
+  background-color: var(--color-paper);
+  color: var(--color-ink);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Paper grain overlay — sits above background, below content */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+/* Editorial rules */
+.rule {
+  border-top: 1.5px solid var(--color-ink);
+}
+.rule-double {
+  border-top: 3px double var(--color-ink);
+}
+
+/* Staggered page-load reveal */
+@keyframes gazette-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.reveal {
+  opacity: 0;
+  animation: gazette-rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    animation: none;
+  }
 }

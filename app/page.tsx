@@ -49,29 +49,35 @@ export default async function Home({ searchParams }: Props) {
 
   return (
     <main>
-      {/* Hero */}
-      <div className="relative overflow-hidden px-4 pb-12 pt-16 md:pb-16 md:pt-24">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute left-[8%] top-[15%] h-72 w-72 rounded-full bg-violet-600/10 blur-3xl" />
-          <div className="absolute right-[12%] top-[10%] h-56 w-56 rounded-full bg-amber-500/10 blur-3xl" />
-          <div className="absolute bottom-0 left-[35%] h-40 w-96 rounded-full bg-rose-600/5 blur-3xl" />
+      {/* Masthead */}
+      <div className="mx-auto max-w-7xl px-4 pb-10 pt-10 md:pt-14">
+        <div className="reveal flex items-center justify-between gap-4 font-mono text-[10px] uppercase tracking-[0.28em] text-ink-soft">
+          <span>전국 축제 · 행사 속보</span>
+          <span className="hidden sm:inline">제 1 호 · 매일 발행</span>
         </div>
-
-        <div className="relative z-10 mx-auto max-w-7xl">
-          <p className="mb-3 text-xs font-medium uppercase tracking-[0.2em] text-amber-500/60">
-            전국 행사 · 축제
-          </p>
-          <h1 className="font-display mb-4 text-6xl font-normal leading-none text-white sm:text-7xl lg:text-8xl">
-            지금 어디서<br />무슨 축제?
+        <div className="rule-double reveal mt-2.5 pt-6" style={{ animationDelay: '60ms' }}>
+          <h1 className="font-display text-6xl leading-[0.92] tracking-tight text-ink sm:text-7xl lg:text-[8.5rem]">
+            지금, 어디서
+            <br />
+            <span className="text-vermilion">무슨</span> 축제?
           </h1>
-          <p className="max-w-sm text-sm leading-relaxed text-[#8888a8]">
-            오늘 기준 진행 중이거나 예정된 전국 행사를 한눈에 확인하세요
+        </div>
+        <div
+          className="reveal mt-6 flex flex-col gap-3 border-t border-line pt-4 sm:flex-row sm:items-end sm:justify-between"
+          style={{ animationDelay: '140ms' }}
+        >
+          <p className="max-w-md font-serif text-base leading-relaxed text-ink-soft">
+            오늘 기준 전국에서 열리고 있거나 곧 막을 올리는 행사를
+            <br className="hidden sm:block" /> 한 면에 펼쳐 모았습니다.
+          </p>
+          <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-ink-soft">
+            TourAPI v2 · 한국관광공사
           </p>
         </div>
       </div>
 
       {/* Filter bar */}
-      <div className="sticky top-[var(--header-h)] z-30 border-b border-white/5 bg-[#080810]/95 px-4 py-3 backdrop-blur-md">
+      <div className="sticky top-[var(--header-h)] z-30 border-y-[1.5px] border-ink bg-paper/95 px-4 py-3 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl">
           <Suspense>
             <AreaFilter />
@@ -80,10 +86,10 @@ export default async function Home({ searchParams }: Props) {
       </div>
 
       {/* Content */}
-      <div className="mx-auto max-w-7xl px-4 py-10">
+      <div className="mx-auto max-w-7xl px-4 py-12">
         <Suspense
           fallback={
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {Array.from({ length: 12 }).map((_, i) => (
                 <CardSkeleton key={i} />
               ))}

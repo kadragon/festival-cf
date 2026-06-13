@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
-import { Black_Han_Sans, Noto_Sans_KR } from 'next/font/google'
+import { Black_Han_Sans, Noto_Serif_KR, Space_Mono } from 'next/font/google'
+import { formatDate, todayStr } from '@/lib/date'
 import './globals.css'
 
 const blackHanSans = Black_Han_Sans({
@@ -9,34 +10,51 @@ const blackHanSans = Black_Han_Sans({
   preload: false,
 })
 
-const noto = Noto_Sans_KR({
+const notoSerif = Noto_Serif_KR({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-noto',
+  weight: ['400', '500', '600', '700', '900'],
+  variable: '--font-noto-serif',
+  display: 'swap',
+})
+
+const spaceMono = Space_Mono({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-space-mono',
   display: 'swap',
 })
 
 export const metadata: Metadata = {
-  title: 'Festival Korea | 전국 행사 정보',
-  description: '전국 행사 및 축제 정보를 한눈에',
+  title: '축제소식 — 전국 행사 가제트',
+  description: '오늘 전국에서 열리는 축제와 행사를 신문처럼 펼쳐 봅니다',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const today = formatDate(todayStr())
+
   return (
     <html lang="ko">
-      <body className={`${blackHanSans.variable} ${noto.variable} font-sans min-h-screen antialiased`}>
-        <header className="sticky top-0 z-40 border-b border-white/5 bg-[#080810]/90 backdrop-blur-md">
-          <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-            <a href="/" className="group flex items-center gap-2.5">
-              <span className="text-xl">🏮</span>
-              <span className="font-display text-lg font-normal tracking-wide text-white transition-colors group-hover:text-amber-400">
-                Festival Korea
+      <body
+        className={`${blackHanSans.variable} ${notoSerif.variable} ${spaceMono.variable} min-h-screen antialiased`}
+      >
+        <header className="sticky top-0 z-40 border-b-[3px] border-double border-ink bg-paper/95 backdrop-blur-sm">
+          <div className="mx-auto max-w-7xl px-4">
+            <div className="flex items-center justify-between gap-4 py-2.5">
+              <a href="/" className="group flex items-baseline gap-2.5">
+                <span className="font-display text-2xl leading-none tracking-tight text-ink transition-colors group-hover:text-vermilion">
+                  축제소식
+                </span>
+                <span className="hidden font-mono text-[10px] uppercase tracking-[0.25em] text-ink-soft sm:inline">
+                  Festival&nbsp;Gazette
+                </span>
+              </a>
+              <span className="font-mono text-[11px] tracking-tight text-ink-soft">
+                {today}
               </span>
-            </a>
-            <span className="hidden text-xs text-[#8888a8] sm:block">전국 행사 정보</span>
+            </div>
           </div>
         </header>
-        <div className="min-h-screen">{children}</div>
+        <div className="relative z-10 min-h-screen">{children}</div>
       </body>
     </html>
   )
