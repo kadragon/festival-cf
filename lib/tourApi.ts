@@ -15,7 +15,7 @@ async function readEnv(): Promise<Record<string, string | undefined>> {
   const fromProcess = process.env as Record<string, string | undefined>
   try {
     const { env } = await getCloudflareContext({ async: true })
-    const envObj = (env || {}) as Record<string, unknown>
+    const envObj = (env || {}) as unknown as Record<string, unknown>
     const cfVars: Record<string, string | undefined> = {}
     for (const key of CF_ENV_KEYS) {
       const val = envObj[key]
@@ -69,9 +69,18 @@ async function buildRequest(
   }
 }
 
-function ensureArray<T>(val: T | T[] | '' | null | undefined): T[] {
+function ensureArray<T>(val: unknown): T[] {
   if (!val || val === '') return []
-  return Array.isArray(val) ? val : [val]
+  return (Array.isArray(val) ? val : [val]) as T[]
+}
+
+// TourAPI v2 JSON envelope. fetch's Response.json() is typed `unknown`, so each
+// call site asserts this shape before reading response.header / response.body.
+interface ApiEnvelope {
+  response?: {
+    header?: { resultCode?: string; resultMsg?: string }
+    body?: { totalCount?: number | string; items?: { item?: unknown } }
+  }
 }
 
 // ─── Types ────────────────────────────────────────────────────────────────
@@ -154,12 +163,12 @@ export async function fetchFestivalList(params: {
   const { url, init } = await buildRequest('/searchFestival2', qp)
   const res = await fetch(url, { ...init, next: { revalidate: 60 } })
   if (!res.ok) throw new Error(`HTTP ${res.status}`)
-  const json = await res.json()
+  const json = (await res.json()) as ApiEnvelope
 
   const header = json.response?.header
   if (header?.resultCode !== '0000') throw new Error(header?.resultMsg ?? 'API error')
 
-  const body = json.response.body
+  const body = json.response?.body
   return {
     items: ensureArray<FestivalItem>(body?.items?.item),
     totalCount: Number(body?.totalCount ?? 0),
@@ -170,29 +179,29 @@ export async function fetchDetailCommon(contentId: string): Promise<DetailCommon
   const { url, init } = await buildRequest('/detailCommon2', { contentId })
   const res = await fetch(url, { ...init, next: { revalidate: 300 } })
   if (!res.ok) throw new Error(`detailCommon2 HTTP ${res.status} (contentId=${contentId})`)
-  const json = await res.json()
+  const json = (await res.json()) as ApiEnvelope
   if (json.response?.header?.resultCode !== '0000')
     throw new Error(`${json.response?.header?.resultMsg ?? 'API error'} (contentId=${contentId})`)
-  const items = ensureArray(json.response?.body?.items?.item)
-  return (items[0] as DetailCommon) ?? null
+  const items = ensureArray<DetailCommon>(json.response?.body?.items?.item)
+  return items[0] ?? null
 }
 
 export async function fetchDetailIntro(contentId: string): Promise<DetailIntro | null> {
   const { url, init } = await buildRequest('/detailIntro2', { contentId, contentTypeId: '15' })
   const res = await fetch(url, { ...init, next: { revalidate: 300 } })
   if (!res.ok) throw new Error(`detailIntro2 HTTP ${res.status} (contentId=${contentId})`)
-  const json = await res.json()
+  const json = (await res.json()) as ApiEnvelope
   if (json.response?.header?.resultCode !== '0000')
     throw new Error(`${json.response?.header?.resultMsg ?? 'API error'} (contentId=${contentId})`)
-  const items = ensureArray(json.response?.body?.items?.item)
-  return (items[0] as DetailIntro) ?? null
+  const items = ensureArray<DetailIntro>(json.response?.body?.items?.item)
+  return items[0] ?? null
 }
 
 export async function fetchDetailImages(contentId: string): Promise<DetailImage[]> {
   const { url, init } = await buildRequest('/detailImage2', { contentId, imageYN: 'Y', numOfRows: 20, pageNo: 1 })
   const res = await fetch(url, { ...init, next: { revalidate: 300 } })
   if (!res.ok) throw new Error(`detailImage2 HTTP ${res.status} (contentId=${contentId})`)
-  const json = await res.json()
+  const json = (await res.json()) as ApiEnvelope
   if (json.response?.header?.resultCode !== '0000')
     throw new Error(`${json.response?.header?.resultMsg ?? 'API error'} (contentId=${contentId})`)
   return ensureArray<DetailImage>(json.response?.body?.items?.item)

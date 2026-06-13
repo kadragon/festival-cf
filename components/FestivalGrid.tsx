@@ -32,14 +32,15 @@ export default function FestivalGrid({ ongoingItems, upcomingItems, initialHasMo
       const params = new URLSearchParams({ page: String(pageRef.current) })
       if (area) params.set('area', area)
       const res = await fetch(`/api/festivals?${params}`)
-      const data = await res.json()
-      if (data.items?.length) {
+      const data = (await res.json()) as { items?: FestivalItem[]; hasMore?: boolean }
+      const newItems = data.items ?? []
+      if (newItems.length) {
         setExtraItems((prev) => {
           const seen = new Set([
             ...prev.map((it) => it.contentid),
             ...initialIds.current,
           ])
-          return [...prev, ...data.items.filter((it: FestivalItem) => !seen.has(it.contentid))]
+          return [...prev, ...newItems.filter((it) => !seen.has(it.contentid))]
         })
       }
       pageRef.current++
