@@ -20,6 +20,10 @@ _No active sprint. Items queued in `backlog.md`._
 
 - `ws@8.18.0` GHSA-58qx-3vcg-4xpx: checked GitHub Dependabot alerts — **not flagged**, no override added. Re-evaluate only if a future alert appears.
 
+### PR #10 — [FEAT] dynamic Next.js icons + harden wrangler config (2026-06-13)
+
+- [ ] [debt] `cpu_ms: 30000` is 1000× paid-tier default; profile actual usage via `wrangler tail` and reduce to measured value — added intentionally for next/og rendering but undocumented (source: pr-review-toolkit:review-pr, P2/conf60) — `wrangler.jsonc:24`
+
 ### Out of scope (noted, not actioned)
 
 - Dependabot open alert: `esbuild` (GHSA-g7r4-m6w7-qqqr, low, `>= 0.27.3, < 0.28.1`) — transitive dep, not in any PR backlog. Add to `backlog.md` if you want it tracked.
