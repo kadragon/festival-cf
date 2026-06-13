@@ -1,9 +1,15 @@
 import { ImageResponse } from 'next/og'
+import { loadKoreanFont } from '@/lib/ogFont'
 
 export const size = { width: 32, height: 32 }
 export const contentType = 'image/png'
 
-export default function Icon() {
+export default async function Icon() {
+  const font = await loadKoreanFont()
+  const fonts = font
+    ? [{ name: 'NotoSansKR', data: font, style: 'normal' as const, weight: 900 as const }]
+    : []
+
   return new ImageResponse(
     (
       <div
@@ -35,7 +41,7 @@ export default function Icon() {
             fontSize: 19,
             fontWeight: 900,
             lineHeight: 1,
-            fontFamily: 'sans-serif',
+            fontFamily: 'NotoSansKR, sans-serif',
             letterSpacing: '-0.02em',
           }}
         >
@@ -43,6 +49,6 @@ export default function Icon() {
         </span>
       </div>
     ),
-    { ...size },
+    { ...size, fonts },
   )
 }

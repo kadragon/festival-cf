@@ -1,9 +1,15 @@
 import { ImageResponse } from 'next/og'
+import { loadKoreanFont } from '@/lib/ogFont'
 
 export const size = { width: 180, height: 180 }
 export const contentType = 'image/png'
 
-export default function AppleIcon() {
+export default async function AppleIcon() {
+  const font = await loadKoreanFont()
+  const fonts = font
+    ? [{ name: 'NotoSansKR', data: font, style: 'normal' as const, weight: 900 as const }]
+    : []
+
   return new ImageResponse(
     (
       <div
@@ -42,7 +48,7 @@ export default function AppleIcon() {
             fontSize: 96,
             fontWeight: 900,
             lineHeight: 1,
-            fontFamily: 'sans-serif',
+            fontFamily: 'NotoSansKR, sans-serif',
             letterSpacing: '-0.02em',
           }}
         >
@@ -54,7 +60,7 @@ export default function AppleIcon() {
             fontSize: 18,
             fontWeight: 700,
             letterSpacing: '0.2em',
-            fontFamily: 'sans-serif',
+            fontFamily: 'NotoSansKR, sans-serif',
             marginTop: 6,
             textTransform: 'uppercase',
           }}
@@ -63,6 +69,6 @@ export default function AppleIcon() {
         </span>
       </div>
     ),
-    { ...size },
+    { ...size, fonts },
   )
 }
