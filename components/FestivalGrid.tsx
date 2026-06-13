@@ -12,7 +12,7 @@ interface Props {
   area: string
 }
 
-const GRID = 'grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+const GRID = 'grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
 
 export default function FestivalGrid({ ongoingItems, upcomingItems, initialHasMore, area }: Props) {
   const [extraItems, setExtraItems] = useState<FestivalItem[]>([])
@@ -66,25 +66,29 @@ export default function FestivalGrid({ ongoingItems, upcomingItems, initialHasMo
 
   if (ongoingItems.length === 0 && upcomingItems.length === 0 && !loading) {
     return (
-      <div className="py-24 text-center">
-        <p className="mb-4 text-5xl opacity-20">🎪</p>
-        <p className="text-sm text-[#8888a8]">해당 지역 행사 정보가 없습니다</p>
+      <div className="rule-double border-x-0 border-b-0 py-24 text-center">
+        <p className="mb-3 font-display text-4xl text-ink/15">휴간</p>
+        <p className="font-mono text-xs uppercase tracking-[0.2em] text-ink-soft">
+          해당 지역 행사 소식이 없습니다
+        </p>
       </div>
     )
   }
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-14">
       {/* Ongoing */}
       {ongoingItems.length > 0 && (
         <section>
-          <div className="mb-6 flex items-center gap-3">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
-            <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-400">
+          <div className="mb-6 flex items-baseline gap-3 border-b-2 border-ink pb-2">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-vermilion" />
+            <h2 className="font-mono text-xs font-bold uppercase tracking-[0.18em] text-vermilion">
               지금 진행중
             </h2>
-            <span className="text-xs text-[#8888a8]">{ongoingItems.length}개</span>
-            <div className="ml-auto h-px flex-1 bg-emerald-500/10" />
+            <span className="font-mono text-xs text-ink-soft">{ongoingItems.length}건</span>
+            <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.2em] text-ink-soft">
+              Now Open
+            </span>
           </div>
           <div className={GRID}>
             {ongoingItems.map((item) => (
@@ -97,13 +101,15 @@ export default function FestivalGrid({ ongoingItems, upcomingItems, initialHasMo
       {/* Upcoming */}
       {upcomingItems.length > 0 && (
         <section>
-          <div className="mb-6 flex items-center gap-3">
-            <span className="h-2 w-2 rounded-full bg-blue-400" />
-            <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-400">
+          <div className="mb-6 flex items-baseline gap-3 border-b-2 border-ink pb-2">
+            <span className="h-2 w-2 rounded-full bg-cheong" />
+            <h2 className="font-mono text-xs font-bold uppercase tracking-[0.18em] text-cheong">
               다가오는 축제
             </h2>
-            <span className="text-xs text-[#8888a8]">{upcomingItems.length}개</span>
-            <div className="ml-auto h-px flex-1 bg-blue-500/10" />
+            <span className="font-mono text-xs text-ink-soft">{upcomingItems.length}건</span>
+            <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.2em] text-ink-soft">
+              Coming Soon
+            </span>
           </div>
           <div className={GRID}>
             {upcomingItems.map((item) => (
@@ -116,10 +122,14 @@ export default function FestivalGrid({ ongoingItems, upcomingItems, initialHasMo
       {/* Extra loaded */}
       {extraItems.length > 0 && (
         <section>
-          <div className="mb-6 flex items-center gap-4">
-            <div className="h-px flex-1 bg-white/5" />
-            <span className="text-xs text-[#8888a8]">더 많은 축제</span>
-            <div className="h-px flex-1 bg-white/5" />
+          <div className="mb-6 flex items-baseline gap-3 border-b border-line pb-2">
+            <h2 className="font-mono text-xs font-bold uppercase tracking-[0.18em] text-ink-soft">
+              더 많은 소식
+            </h2>
+            <span className="font-mono text-xs text-ink-soft">{extraItems.length}건</span>
+            <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.2em] text-ink-soft">
+              More
+            </span>
           </div>
           <div className={GRID}>
             {extraItems.map((item) => (

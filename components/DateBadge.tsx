@@ -8,31 +8,31 @@ interface Props {
 const config = {
   ongoing: {
     label: '진행중',
-    dot: 'bg-emerald-400',
-    bg: 'bg-emerald-950/80 text-emerald-300 border border-emerald-500/30 backdrop-blur-sm',
+    tone: 'border-vermilion text-vermilion',
+    dot: 'bg-vermilion',
     pulse: true,
   },
   upcoming: {
     label: '예정',
-    dot: 'bg-blue-400',
-    bg: 'bg-blue-950/80 text-blue-300 border border-blue-500/30 backdrop-blur-sm',
+    tone: 'border-cheong text-cheong',
+    dot: 'bg-cheong',
     pulse: false,
   },
   ended: {
     label: '종료',
-    dot: 'bg-zinc-500',
-    bg: 'bg-zinc-900/80 text-zinc-400 border border-zinc-700/30 backdrop-blur-sm',
+    tone: 'border-ink-soft text-ink-soft',
+    dot: 'bg-ink-soft',
     pulse: false,
   },
 }
 
 export default function DateBadge({ status, className }: Props) {
-  const { label, dot, bg, pulse } = config[status]
+  const { label, tone, dot, pulse } = config[status]
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium',
-        bg,
+        'inline-flex -rotate-[4deg] items-center gap-1.5 border-2 bg-card/95 px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.15em] shadow-[2px_2px_0_rgba(33,26,16,0.18)]',
+        tone,
         className
       )}
     >

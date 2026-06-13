@@ -31,8 +31,8 @@ export default async function FestivalDetail({ params }: Props) {
           <div className="space-y-8 lg:col-span-2">
             {overviewText && (
               <section>
-                <h2 className="mb-3 text-base font-semibold text-[#f0eee9]">행사 소개</h2>
-                <p className="whitespace-pre-line text-sm leading-relaxed text-[#8888a8]">
+                <h2 className="mb-3 border-b-2 border-ink pb-2 font-display text-lg text-ink">행사 소개</h2>
+                <p className="whitespace-pre-line font-serif text-[15px] leading-[1.85] text-ink/80">
                   {overviewText}
                 </p>
               </section>

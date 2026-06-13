@@ -17,7 +17,7 @@ export default function DetailHero({ common, intro }: Props) {
   const status = start && end ? festivalStatus(start, end) : null
 
   return (
-    <div className="relative h-64 w-full overflow-hidden md:h-80 lg:h-96">
+    <div className="relative h-72 w-full overflow-hidden border-b-[3px] border-double border-ink md:h-80 lg:h-[26rem]">
       {common.firstimage ? (
         <Image
           src={common.firstimage}
@@ -28,37 +28,39 @@ export default function DetailHero({ common, intro }: Props) {
           className="object-cover"
         />
       ) : (
-        <div className="h-full w-full bg-gradient-to-br from-violet-900/50 via-[#16162a] to-amber-900/30" />
+        <div className="flex h-full w-full items-center justify-center bg-paper-2">
+          <span className="font-display text-6xl text-ink/15">축제</span>
+        </div>
       )}
 
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
+      {/* Ink wash overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/55 to-ink/10" />
 
       {/* Back button */}
       <Link
         href="/"
-        className="absolute left-4 top-4 flex items-center gap-1.5 rounded-full border border-white/20 bg-black/40 px-3 py-1.5 text-sm text-white/90 backdrop-blur-sm transition hover:bg-black/60"
+        className="absolute left-4 top-4 flex items-center gap-1.5 border-2 border-paper/70 bg-ink/40 px-3 py-1.5 font-mono text-xs font-bold uppercase tracking-wide text-paper backdrop-blur-sm transition hover:bg-ink/70"
       >
         <ArrowLeft className="h-4 w-4" />
         목록
       </Link>
 
       {/* Title area */}
-      <div className="absolute bottom-0 left-0 right-0 p-6">
-        {status && <DateBadge status={status} className="mb-2.5" />}
-        <h1 className="mb-2 text-2xl font-bold leading-tight text-white md:text-3xl">
+      <div className="absolute inset-x-0 bottom-0 mx-auto max-w-7xl px-4 pb-6">
+        {status && <DateBadge status={status} className="mb-3" />}
+        <h1 className="mb-3 font-display text-3xl leading-[1.02] tracking-tight text-paper md:text-5xl lg:text-6xl">
           {common.title}
         </h1>
-        <div className="flex flex-wrap gap-3 text-sm text-white/70">
+        <div className="flex flex-wrap gap-x-5 gap-y-1.5 font-mono text-[13px] text-paper/80">
           {common.addr1 && (
             <span className="flex items-center gap-1.5">
-              <MapPin className="h-4 w-4 text-amber-400/70" />
+              <MapPin className="h-4 w-4 text-marigold" />
               {common.addr1}
             </span>
           )}
           {start && end && (
             <span className="flex items-center gap-1.5">
-              <Calendar className="h-4 w-4 text-amber-400/70" />
+              <Calendar className="h-4 w-4 text-marigold" />
               {formatDate(start)} — {formatDate(end)}
             </span>
           )}
