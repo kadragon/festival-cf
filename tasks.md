@@ -11,8 +11,8 @@ _No active sprint. Items queued in `backlog.md`._
 
 ### PR #8 — [FIX] include today-start festivals, sort upcoming by date, add contentId to detail errors (2026-06-13)
 
-- [ ] [debt] Null-guard the new `.sort()` localeCompare calls — `(a.eventstartdate ?? '').localeCompare(b.eventstartdate ?? '')`; throws if TourAPI ever returns an item with missing `eventstartdate` (low confidence — required field, near-always present) (source: pr-review-toolkit:review-pr) — `app/api/festivals/route.ts:38,50`, `app/page.tsx:36`
-- [ ] [debt] Per-page `.sort()` sorts only within each 20-item page; "더 많은 소식" batches arrive out of global startdate order across infinite-scroll loads. Fetch-then-sort or accept the modified-date (`arrange:'C'`) pagination limitation (source: agy, P2) — `app/api/festivals/route.ts:50`
+- [ ] [debt] Null-guard the `.sort()` localeCompare call — `(a.eventstartdate ?? '').localeCompare(b.eventstartdate ?? '')`; throws if TourAPI ever returns an item with missing `eventstartdate` (low confidence — required field, near-always present) (source: pr-review-toolkit:review-pr) — `app/api/festivals/route.ts:38`, `app/page.tsx:36`
+- [x] [debt] Per-page `.sort()` sorts only within each 20-item page; "더 많은 소식" batches arrive out of global startdate order across infinite-scroll loads. Fetch-then-sort or accept the modified-date (`arrange:'C'`) pagination limitation (source: agy, P2) — `app/api/festivals/route.ts:50` *(resolved in PR #14)*
 - [ ] [debt] page>1 `else` branch emits duplicate `contentid` for today-starting festivals already returned as page-1 `ongoing`; masked by client `initialIds` dedup but the API contract regresses for other consumers (source: codex, P3) — `app/api/festivals/route.ts:42-52`
 - [ ] [doc] FestivalCard perforation comment imprecise — notch circles straddle the card edge (cover bg-card corner + blend outside), not merely "paint over the edge" (source: pr-review-toolkit:review-pr, P3) — `components/FestivalCard.tsx:53`
 
@@ -23,6 +23,10 @@ _No active sprint. Items queued in `backlog.md`._
 ### PR #10 — [FEAT] dynamic Next.js icons + harden wrangler config (2026-06-13)
 
 - [ ] [debt] `cpu_ms: 30000` is 1000× paid-tier default; profile actual usage via `wrangler tail` and reduce to measured value — added intentionally for next/og rendering but undocumented (source: pr-review-toolkit:review-pr, P2/conf60) — `wrangler.jsonc:24`
+
+### PR #14 — [FIX] accept TourAPI modification-date ordering on page 2+ (2026-06-15)
+
+- [ ] [debt] Page-1 upcoming items still sorted by `eventstartdate` (line 38) but page-2+ returns in TourAPI modify-date order — ordering inconsistency across infinite-scroll pages. Design decision needed: remove page-1 sort for full consistency, or accept two-tier model (curated page-1 sorted vs raw pagination page-2+). (source: agy, pr-review-toolkit:review-pr, P1/conf85) — `app/api/festivals/route.ts:38`
 
 ### Out of scope (noted, not actioned)
 
