@@ -41,13 +41,14 @@ export async function GET(request: NextRequest) {
       hasMore = upcomingRes.totalCount > 20
     } else {
       // Subsequent pages: upcoming only (page 1 covered ongoing)
+      // TourAPI paginates by arrange:'C' (modify-date); global start-date order not available.
       const res = await fetchFestivalList({
         eventStartDate: today,
         areaCode: area || undefined,
         pageNo: page,
         numOfRows: 20,
       })
-      items = res.items.sort((a, b) => a.eventstartdate.localeCompare(b.eventstartdate))
+      items = res.items
       hasMore = res.totalCount > page * 20
     }
 
