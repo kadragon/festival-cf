@@ -56,3 +56,4 @@ plan.md
 
 # Agent harness symlinks (machine-local, not portable)
 .agents/skills
+.agents/.maintenance-stamp
