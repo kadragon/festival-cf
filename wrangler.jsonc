@@ -20,9 +20,6 @@
 	],
 	"minify": true,
 	"keep_vars": true,
-	"limits": {
-		"cpu_ms": 30000
-	},
 	"observability": {
 		"logs": {
 			"enabled": true,
