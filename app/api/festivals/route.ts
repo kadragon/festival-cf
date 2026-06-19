@@ -41,8 +41,9 @@ export async function GET(request: NextRequest) {
       const upcoming = upcomingRes.items
         .filter((it) => !seen.has(it.contentid))
         // Page-1-only start-date sort (curated tier). Page 2+ cannot match this
-        // ordering — see the two-tier note above.
-        .sort((a, b) => (a.eventstartdate ?? '').localeCompare(b.eventstartdate ?? ''))
+        // ordering — see the two-tier note above. Undated items sort last via the
+        // '99999999' sentinel (> any YYYYMMDD), not first as '' would.
+        .sort((a, b) => (a.eventstartdate || '99999999').localeCompare(b.eventstartdate || '99999999'))
 
       items = [...ongoing, ...upcoming].slice(0, 20)
       hasMore = upcomingRes.totalCount > 20
