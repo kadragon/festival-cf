@@ -10,6 +10,7 @@ Next.js 16 (App Router) + Cloudflare Workers app — Korean festival data from T
 | `docs/conventions.md` | Before writing components, API routes, or lib functions |
 | `docs/runbook.md` | For build, preview, deploy commands and troubleshooting |
 | `docs/workflows.md` | When starting any implementation cycle |
+| `docs/eval-criteria.md` | Before grading a feature / writing a Sprint Contract |
 
 ## Golden Principles
 
