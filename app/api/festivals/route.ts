@@ -12,6 +12,11 @@ export async function GET(request: NextRequest) {
     let items: FestivalItem[]
     let hasMore: boolean
 
+    // Two-tier ordering model (deliberate): page 1 is a curated first screen —
+    // ongoing first, then upcoming sorted by start-date (soonest first). Page 2+
+    // returns raw TourAPI pagination order (arrange:'C', modify-date). Global
+    // start-date order across pages is intentionally NOT attempted: TourAPI offers
+    // no start-date pagination, so it would require fetching every page per request.
     if (page === 1) {
       // Concurrent: ongoing (started on/before today) + upcoming (start from today)
       const [ongoingRes, upcomingRes] = await Promise.all([
@@ -35,13 +40,16 @@ export async function GET(request: NextRequest) {
       const seen = new Set(ongoing.map((it) => it.contentid))
       const upcoming = upcomingRes.items
         .filter((it) => !seen.has(it.contentid))
+        // Page-1-only start-date sort (curated tier). Page 2+ cannot match this
+        // ordering — see the two-tier note above.
         .sort((a, b) => a.eventstartdate.localeCompare(b.eventstartdate))
 
       items = [...ongoing, ...upcoming].slice(0, 20)
       hasMore = upcomingRes.totalCount > 20
     } else {
-      // Subsequent pages: upcoming only (page 1 covered ongoing)
-      // TourAPI paginates by arrange:'C' (modify-date); global start-date order not available.
+      // Subsequent pages: upcoming only (page 1 covered ongoing). Raw tier —
+      // TourAPI paginates by arrange:'C' (modify-date); global start-date order
+      // is not available, so these arrive unsorted relative to page 1 by design.
       const res = await fetchFestivalList({
         eventStartDate: today,
         areaCode: area || undefined,
