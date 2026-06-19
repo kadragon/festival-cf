@@ -69,6 +69,11 @@ async function buildRequest(
   }
 }
 
+// Trust-boundary cast: TourAPI returns `items.item` as a single object, an array,
+// or '' (empty). The `as T[]` deliberately trusts the external JSON's shape —
+// callers assert element types via the ApiEnvelope / FestivalItem interfaces. A
+// per-element runtime predicate is intentionally omitted (disproportionate for an
+// external-JSON boundary; matches the project's doc-resolution house style).
 function ensureArray<T>(val: unknown): T[] {
   if (!val || val === '') return []
   return (Array.isArray(val) ? val : [val]) as T[]
@@ -165,10 +170,12 @@ export async function fetchFestivalList(params: {
   if (!res.ok) throw new Error(`HTTP ${res.status}`)
   const json = (await res.json()) as ApiEnvelope
 
-  const header = json.response?.header
-  if (header?.resultCode !== '0000') throw new Error(header?.resultMsg ?? 'API error')
+  const response = json.response
+  if (!response || response.header?.resultCode !== '0000') {
+    throw new Error(response?.header?.resultMsg ?? 'API error')
+  }
 
-  const body = json.response?.body
+  const body = response.body
   return {
     items: ensureArray<FestivalItem>(body?.items?.item),
     totalCount: Number(body?.totalCount ?? 0),

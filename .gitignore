@@ -57,3 +57,6 @@ plan.md
 # Agent harness symlinks (machine-local, not portable)
 .agents/skills
 .agents/.maintenance-stamp
+
+# git worktrees (batch-mode parallel implement)
+.worktrees/

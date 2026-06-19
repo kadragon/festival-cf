@@ -41,8 +41,9 @@ export async function GET(request: NextRequest) {
       const upcoming = upcomingRes.items
         .filter((it) => !seen.has(it.contentid))
         // Page-1-only start-date sort (curated tier). Page 2+ cannot match this
-        // ordering — see the two-tier note above.
-        .sort((a, b) => a.eventstartdate.localeCompare(b.eventstartdate))
+        // ordering — see the two-tier note above. Undated items sort last via the
+        // '99999999' sentinel (> any YYYYMMDD), not first as '' would.
+        .sort((a, b) => (a.eventstartdate || '99999999').localeCompare(b.eventstartdate || '99999999'))
 
       items = [...ongoing, ...upcoming].slice(0, 20)
       hasMore = upcomingRes.totalCount > 20
@@ -50,6 +51,11 @@ export async function GET(request: NextRequest) {
       // Subsequent pages: upcoming only (page 1 covered ongoing). Raw tier —
       // TourAPI paginates by arrange:'C' (modify-date); global start-date order
       // is not available, so these arrive unsorted relative to page 1 by design.
+      // These items are returned unfiltered: a festival starting today can surface
+      // here AND in page-1 `ongoing`, re-emitting a contentid already sent. Server-
+      // side dedup is impossible — the API is stateless and page-1 contentids are
+      // unknown on a page>1 request. Accepted tradeoff of stateless pagination; the
+      // client dedups via `initialIds`.
       const res = await fetchFestivalList({
         eventStartDate: today,
         areaCode: area || undefined,

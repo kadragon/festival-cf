@@ -33,7 +33,8 @@ async function FestivalSection({ area }: { area: string }) {
   const seen = new Set(ongoing.map((it) => it.contentid))
   const upcoming = upcomingRes.items
     .filter((it) => !seen.has(it.contentid))
-    .sort((a, b) => a.eventstartdate.localeCompare(b.eventstartdate))
+    // Undated items sort last via the '99999999' sentinel (> any YYYYMMDD).
+    .sort((a, b) => (a.eventstartdate || '99999999').localeCompare(b.eventstartdate || '99999999'))
 
   return (
     <FestivalGrid
