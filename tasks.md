@@ -26,7 +26,7 @@ _No active sprint. Items queued in `backlog.md`._
 
 ### PR #14 — [FIX] accept TourAPI modification-date ordering on page 2+ (2026-06-15)
 
-- [ ] [debt] Page-1 upcoming items still sorted by `eventstartdate` (line 38) but page-2+ returns in TourAPI modify-date order — ordering inconsistency across infinite-scroll pages. Design decision needed: remove page-1 sort for full consistency, or accept two-tier model (curated page-1 sorted vs raw pagination page-2+). (source: agy, pr-review-toolkit:review-pr, P1/conf85) — `app/api/festivals/route.ts:38`
+- [x] [debt] Page-1 upcoming items still sorted by `eventstartdate` (line 38) but page-2+ returns in TourAPI modify-date order — ordering inconsistency across infinite-scroll pages. Design decision needed: remove page-1 sort for full consistency, or accept two-tier model (curated page-1 sorted vs raw pagination page-2+). (source: agy, pr-review-toolkit:review-pr, P1/conf85) — `app/api/festivals/route.ts:38` *(resolved: accepted two-tier model, documented in code)*
 
 ### Out of scope (noted, not actioned)
 
