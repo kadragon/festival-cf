@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 import { fetchFestivalList } from '@/lib/tourApi'
 import { todayStr, daysAgoStr, endOfWeekStr } from '@/lib/date'
+import { splitFestivalTiers } from '@/lib/festivals'
 import FestivalGrid from '@/components/FestivalGrid'
 import AreaFilter from '@/components/AreaFilter'
 import CardSkeleton from '@/components/CardSkeleton'
@@ -28,16 +29,12 @@ async function FestivalSection({ area }: { area: string }) {
     }),
   ])
 
-  const ongoing = ongoingRes.items.filter(
-    (it) => it.eventstartdate <= today && it.eventenddate >= today
+  const { ongoing, thisWeekend, upcoming } = splitFestivalTiers(
+    ongoingRes.items,
+    upcomingRes.items,
+    today,
+    weekend
   )
-  const seen = new Set(ongoing.map((it) => it.contentid))
-  const rest = upcomingRes.items
-    .filter((it) => !seen.has(it.contentid))
-    // Undated items sort last via the '99999999' sentinel (> any YYYYMMDD).
-    .sort((a, b) => (a.eventstartdate || '99999999').localeCompare(b.eventstartdate || '99999999'))
-  const thisWeekend = rest.filter((it) => (it.eventstartdate || '99999999') <= weekend)
-  const upcoming = rest.filter((it) => (it.eventstartdate || '99999999') > weekend)
 
   return (
     <FestivalGrid
