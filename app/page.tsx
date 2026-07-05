@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 import { fetchFestivalList } from '@/lib/tourApi'
-import { todayStr, daysAgoStr } from '@/lib/date'
+import { todayStr, daysAgoStr, endOfWeekStr } from '@/lib/date'
+import { splitFestivalTiers } from '@/lib/festivals'
 import FestivalGrid from '@/components/FestivalGrid'
 import AreaFilter from '@/components/AreaFilter'
 import CardSkeleton from '@/components/CardSkeleton'
@@ -11,6 +12,7 @@ interface Props {
 
 async function FestivalSection({ area }: { area: string }) {
   const today = todayStr()
+  const weekend = endOfWeekStr()
 
   const [ongoingRes, upcomingRes] = await Promise.all([
     fetchFestivalList({
@@ -27,19 +29,18 @@ async function FestivalSection({ area }: { area: string }) {
     }),
   ])
 
-  const ongoing = ongoingRes.items.filter(
-    (it) => it.eventstartdate <= today && it.eventenddate >= today
+  const { ongoing, thisWeekend, upcoming } = splitFestivalTiers(
+    ongoingRes.items,
+    upcomingRes.items,
+    today,
+    weekend
   )
-  const seen = new Set(ongoing.map((it) => it.contentid))
-  const upcoming = upcomingRes.items
-    .filter((it) => !seen.has(it.contentid))
-    // Undated items sort last via the '99999999' sentinel (> any YYYYMMDD).
-    .sort((a, b) => (a.eventstartdate || '99999999').localeCompare(b.eventstartdate || '99999999'))
 
   return (
     <FestivalGrid
       key={area}
       ongoingItems={ongoing}
+      thisWeekendItems={thisWeekend}
       upcomingItems={upcoming}
       initialHasMore={upcomingRes.totalCount > 20}
       area={area}

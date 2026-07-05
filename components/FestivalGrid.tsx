@@ -7,6 +7,7 @@ import CardSkeleton from './CardSkeleton'
 
 interface Props {
   ongoingItems: FestivalItem[]
+  thisWeekendItems: FestivalItem[]
   upcomingItems: FestivalItem[]
   initialHasMore: boolean
   area: string
@@ -14,7 +15,13 @@ interface Props {
 
 const GRID = 'grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
 
-export default function FestivalGrid({ ongoingItems, upcomingItems, initialHasMore, area }: Props) {
+export default function FestivalGrid({
+  ongoingItems,
+  thisWeekendItems,
+  upcomingItems,
+  initialHasMore,
+  area,
+}: Props) {
   const [extraItems, setExtraItems] = useState<FestivalItem[]>([])
   const [hasMore, setHasMore] = useState(initialHasMore)
   const [loading, setLoading] = useState(false)
@@ -22,7 +29,9 @@ export default function FestivalGrid({ ongoingItems, upcomingItems, initialHasMo
   const sentinelRef = useRef<HTMLDivElement>(null)
 
   const initialIds = useRef(
-    new Set([...ongoingItems, ...upcomingItems].map((it) => it.contentid))
+    new Set(
+      [...ongoingItems, ...thisWeekendItems, ...upcomingItems].map((it) => it.contentid)
+    )
   )
 
   const loadMore = useCallback(async () => {
@@ -66,7 +75,12 @@ export default function FestivalGrid({ ongoingItems, upcomingItems, initialHasMo
     return () => observer.disconnect()
   }, [loadMore])
 
-  if (ongoingItems.length === 0 && upcomingItems.length === 0 && !loading) {
+  if (
+    ongoingItems.length === 0 &&
+    thisWeekendItems.length === 0 &&
+    upcomingItems.length === 0 &&
+    !loading
+  ) {
     return (
       <div className="rule-double border-x-0 border-b-0 py-24 text-center">
         <p className="mb-3 font-display text-4xl text-ink/15">휴간</p>
@@ -94,6 +108,27 @@ export default function FestivalGrid({ ongoingItems, upcomingItems, initialHasMo
           </div>
           <div className={GRID}>
             {ongoingItems.map((item) => (
+              <FestivalCard key={item.contentid} item={item} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* This weekend */}
+      {thisWeekendItems.length > 0 && (
+        <section>
+          <div className="mb-6 flex items-baseline gap-3 border-b-2 border-ink pb-2">
+            <span className="h-2 w-2 rounded-full bg-ink" />
+            <h2 className="font-mono text-xs font-bold uppercase tracking-[0.18em] text-ink">
+              이번 주말 시작
+            </h2>
+            <span className="font-mono text-xs text-ink-soft">{thisWeekendItems.length}건</span>
+            <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.2em] text-ink-soft">
+              This Weekend
+            </span>
+          </div>
+          <div className={GRID}>
+            {thisWeekendItems.map((item) => (
               <FestivalCard key={item.contentid} item={item} />
             ))}
           </div>

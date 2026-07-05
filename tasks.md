@@ -4,6 +4,10 @@ _No active sprint. Items queued in `backlog.md`._
 
 ## Review Backlog
 
+### PR #18 — [FEAT] add this-weekend tier between ongoing and upcoming festivals (2026-07-05)
+
+- [ ] [debt] `endOfWeekStr`/`daysAgoStr` mix local `Date` methods (`getDay`/`getDate`/`setDate`) with UTC formatting (`toISOString`) — in timezones ahead of UTC (e.g. KST), this can shift the computed boundary by a day depending on local time-of-day when the code runs. Pre-existing pattern (`daysAgoStr` had it before this PR); only a real risk if the app ever runs somewhere other than the UTC-forced Cloudflare Workers runtime. Fix all three date helpers together if addressed (source: agy, codex, P2) — `lib/date.ts:6-15`
+
 ### PR #9 — [FIX] region codes + KV incremental cache (2026-06-13)
 
 - [x] [debt] `ensureArray<T>` widened to `val: unknown` with internal `as T[]` cast — unsound: a TourAPI item not matching T propagates silently. Acceptable for external-JSON parsing, but a runtime shape-check or type predicate would be safer (source: pr-review-toolkit:review-pr, P3) — `lib/tourApi.ts:72` *(resolved: documented as deliberate external-JSON trust-boundary cast; runtime predicate intentionally omitted)*

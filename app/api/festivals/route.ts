@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { fetchFestivalList, type FestivalItem } from '@/lib/tourApi'
-import { todayStr, daysAgoStr } from '@/lib/date'
+import { todayStr, daysAgoStr, endOfWeekStr } from '@/lib/date'
+import { splitFestivalTiers } from '@/lib/festivals'
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl
@@ -34,18 +35,17 @@ export async function GET(request: NextRequest) {
         }),
       ])
 
-      const ongoing = ongoingRes.items.filter(
-        (it) => it.eventstartdate <= today && it.eventenddate >= today
+      // Page-1-only tiered split (curated tier). Page 2+ cannot match this
+      // ordering — see the two-tier note above.
+      const weekend = endOfWeekStr()
+      const { ongoing, thisWeekend, upcoming } = splitFestivalTiers(
+        ongoingRes.items,
+        upcomingRes.items,
+        today,
+        weekend
       )
-      const seen = new Set(ongoing.map((it) => it.contentid))
-      const upcoming = upcomingRes.items
-        .filter((it) => !seen.has(it.contentid))
-        // Page-1-only start-date sort (curated tier). Page 2+ cannot match this
-        // ordering — see the two-tier note above. Undated items sort last via the
-        // '99999999' sentinel (> any YYYYMMDD), not first as '' would.
-        .sort((a, b) => (a.eventstartdate || '99999999').localeCompare(b.eventstartdate || '99999999'))
 
-      items = [...ongoing, ...upcoming].slice(0, 20)
+      items = [...ongoing, ...thisWeekend, ...upcoming].slice(0, 20)
       hasMore = upcomingRes.totalCount > 20
     } else {
       // Subsequent pages: upcoming only (page 1 covered ongoing). Raw tier —
