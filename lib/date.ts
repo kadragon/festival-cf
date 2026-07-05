@@ -4,13 +4,13 @@ export function todayStr(): string {
 
 export function daysAgoStr(days: number): string {
   const d = new Date()
-  d.setDate(d.getDate() - days)
+  d.setUTCDate(d.getUTCDate() - days)
   return d.toISOString().slice(0, 10).replace(/-/g, '')
 }
 
 export function endOfWeekStr(): string {
   const d = new Date()
-  d.setDate(d.getDate() + ((7 - d.getDay()) % 7))
+  d.setUTCDate(d.getUTCDate() + ((7 - d.getUTCDay()) % 7))
   return d.toISOString().slice(0, 10).replace(/-/g, '')
 }
 
