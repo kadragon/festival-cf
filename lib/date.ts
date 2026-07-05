@@ -8,6 +8,13 @@ export function daysAgoStr(days: number): string {
   return d.toISOString().slice(0, 10).replace(/-/g, '')
 }
 
+/** This week's Sunday (today if today is Sunday), as YYYYMMDD. */
+export function endOfWeekStr(): string {
+  const d = new Date()
+  d.setDate(d.getDate() + ((7 - d.getDay()) % 7))
+  return d.toISOString().slice(0, 10).replace(/-/g, '')
+}
+
 export function formatDate(yyyymmdd: string): string {
   if (!yyyymmdd || yyyymmdd.length < 8) return ''
   return `${yyyymmdd.slice(0, 4)}.${yyyymmdd.slice(4, 6)}.${yyyymmdd.slice(6, 8)}`
