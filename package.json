@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "clsx": "^2.1.1",
-    "lucide-react": "^1.71.0",
+    "lucide-react": "^1.74.0",
     "next": "16.4.6",
     "react": "19.3.1",
     "react-dom": "19.3.1",
@@ -21,14 +21,14 @@
     "tailwind-merge": "^3.7.0"
   },
   "devDependencies": {
-    "@opennextjs/cloudflare": "^1.20.16",
+    "@opennextjs/cloudflare": "^1.20.17",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^26",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "tailwindcss": "^4",
     "typescript": "^7",
-    "wrangler": "^4.159.0"
+    "wrangler": "^4.163.0"
   },
   "pnpm": {
     "overrides": {
