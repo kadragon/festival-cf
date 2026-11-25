@@ -1,8 +1,7 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { type FestivalItem } from '@/lib/tourApi'
-import { filterWeekendVisit } from '@/lib/festivals'
 import { formatMonthDay } from '@/lib/date'
 import FestivalCard from './FestivalCard'
 import CardSkeleton from './CardSkeleton'
@@ -10,6 +9,7 @@ import CardSkeleton from './CardSkeleton'
 interface Props {
   ongoingItems: FestivalItem[]
   thisWeekendItems: FestivalItem[]
+  weekendVisitItems: FestivalItem[]
   upcomingItems: FestivalItem[]
   initialHasMore: boolean
   area: string
@@ -21,6 +21,7 @@ const GRID = 'grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-
 export default function FestivalGrid({
   ongoingItems,
   thisWeekendItems,
+  weekendVisitItems,
   upcomingItems,
   initialHasMore,
   area,
@@ -67,8 +68,6 @@ export default function FestivalGrid({
     }
   }, [loading, hasMore, area])
 
-  // The weekend filter only searches the first fetch, so infinite scroll is
-  // paused while it is on (no extra TourAPI calls).
   useEffect(() => {
     const sentinel = sentinelRef.current
     if (!sentinel) return
@@ -82,20 +81,11 @@ export default function FestivalGrid({
     return () => observer.disconnect()
   }, [loadMore, weekendOnly])
 
-  const weekendVisitItems = useMemo(
-    () =>
-      filterWeekendVisit(
-        [...ongoingItems, ...thisWeekendItems, ...upcomingItems],
-        weekend.saturday,
-        weekend.sunday
-      ),
-    [ongoingItems, thisWeekendItems, upcomingItems, weekend.saturday, weekend.sunday]
-  )
-
   if (
     ongoingItems.length === 0 &&
     thisWeekendItems.length === 0 &&
     upcomingItems.length === 0 &&
+    weekendVisitItems.length === 0 &&
     !loading
   ) {
     return (
@@ -152,7 +142,6 @@ export default function FestivalGrid({
         </section>
       ) : (
         <>
-          {/* Ongoing */}
           {ongoingItems.length > 0 && (
             <section>
               <div className="mb-6 flex items-baseline gap-3 border-b-2 border-ink pb-2">
@@ -173,7 +162,6 @@ export default function FestivalGrid({
             </section>
           )}
 
-          {/* This weekend */}
           {thisWeekendItems.length > 0 && (
             <section>
               <div className="mb-6 flex items-baseline gap-3 border-b-2 border-ink pb-2">
@@ -194,7 +182,6 @@ export default function FestivalGrid({
             </section>
           )}
 
-          {/* Upcoming */}
           {upcomingItems.length > 0 && (
             <section>
               <div className="mb-6 flex items-baseline gap-3 border-b-2 border-ink pb-2">
@@ -215,7 +202,6 @@ export default function FestivalGrid({
             </section>
           )}
 
-          {/* Extra loaded */}
           {extraItems.length > 0 && (
             <section>
               <div className="mb-6 flex items-baseline gap-3 border-b border-line pb-2">

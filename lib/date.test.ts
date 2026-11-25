@@ -7,10 +7,11 @@ import {
   weekendRange,
 } from './date'
 
-// KST = UTC+9, so KST 00:00 is 15:00 UTC of the previous calendar day.
+const KST_OFFSET_HOURS = 9
+
 function freezeKst(y: number, m: number, d: number, hh = 0, mm = 0) {
   vi.useFakeTimers()
-  vi.setSystemTime(new Date(Date.UTC(y, m - 1, d, hh - 9, mm)))
+  vi.setSystemTime(new Date(Date.UTC(y, m - 1, d, hh - KST_OFFSET_HOURS, mm)))
 }
 
 afterEach(() => {
@@ -90,7 +91,7 @@ describe('KST 00:00-09:00 boundary (UTC date lags KST by a day)', () => {
   })
 
   it('crosses month and year boundaries', () => {
-    freezeKst(2026, 12, 28, 0, 0) // Monday
+    freezeKst(2026, 12, 28, 0, 0)
     expect(weekendRange()).toEqual({ saturday: '20270102', sunday: '20270103' })
     expect(daysAgoStr(28)).toBe('20261130')
   })

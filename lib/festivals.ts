@@ -16,22 +16,23 @@ function isValidYmd(s: string): boolean {
 }
 
 /**
- * Festivals whose [eventstartdate, eventenddate] overlaps the given Saturday or
- * Sunday (YYYYMMDD). Items with a missing/invalid date or start > end are
- * skipped; duplicates are dropped by contentid (first wins). Pure filter over
- * already-fetched items — makes no API calls.
+ * Festivals whose [eventstartdate, eventenddate] overlaps the visit window
+ * [from, to] (YYYYMMDD) — this weekend's Saturday and Sunday, with `from`
+ * raised to today once Saturday has passed. Items with a missing/invalid date
+ * or start > end are skipped; duplicates are dropped by contentid (first
+ * wins). Pure filter over already-fetched items — makes no API calls.
  */
 export function filterWeekendVisit(
   items: FestivalItem[],
-  saturday: string,
-  sunday: string
+  from: string,
+  to: string
 ): FestivalItem[] {
   const seen = new Set<string>()
   const result: FestivalItem[] = []
   for (const it of items) {
     const { eventstartdate: start, eventenddate: end } = it
     if (!isValidYmd(start) || !isValidYmd(end) || start > end) continue
-    if (start > sunday || end < saturday) continue
+    if (start > to || end < from) continue
     if (seen.has(it.contentid)) continue
     seen.add(it.contentid)
     result.push(it)

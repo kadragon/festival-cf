@@ -77,6 +77,11 @@ describe('filterWeekendVisit (weekend Nov 28-29, 2026)', () => {
     expect(ids(filterWeekendVisit(items, SAT, SUN))).toEqual(['ok'])
   })
 
+  it('on Sunday the window starts today, so a festival that ended Saturday is excluded', () => {
+    const items = [fest('ended-sat', '20261127', '20261128'), fest('ends-sun', '20261127', '20261129')]
+    expect(ids(filterWeekendVisit(items, SUN, SUN))).toEqual(['ends-sun'])
+  })
+
   it('does not mutate the input', () => {
     const items = [fest('a', '20261128', '20261128'), fest('a', '20261128', '20261128')]
     filterWeekendVisit(items, SAT, SUN)

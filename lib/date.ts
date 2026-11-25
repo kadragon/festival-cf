@@ -3,8 +3,7 @@
 // date lag KST by a day between 00:00 and 09:00 KST.
 const KST_OFFSET_MS = 9 * 60 * 60 * 1000
 
-// A Date whose UTC fields hold the current KST wall-clock time.
-function kstNow(): Date {
+function kstWallClockAsUtc(): Date {
   return new Date(Date.now() + KST_OFFSET_MS)
 }
 
@@ -19,22 +18,22 @@ function addDays(d: Date, days: number): Date {
 }
 
 export function todayStr(): string {
-  return toYmd(kstNow())
+  return toYmd(kstWallClockAsUtc())
 }
 
 export function daysAgoStr(days: number): string {
-  return toYmd(addDays(kstNow(), -days))
+  return toYmd(addDays(kstWallClockAsUtc(), -days))
 }
 
 /** This week's Sunday (KST); today when today is Sunday. */
 export function endOfWeekStr(): string {
-  const d = kstNow()
+  const d = kstWallClockAsUtc()
   return toYmd(addDays(d, (7 - d.getUTCDay()) % 7))
 }
 
 /** Saturday and Sunday of the current Mon-Sun week in KST, as YYYYMMDD. */
 export function weekendRange(): { saturday: string; sunday: string } {
-  const d = kstNow()
+  const d = kstWallClockAsUtc()
   const sunday = addDays(d, (7 - d.getUTCDay()) % 7)
   return { saturday: toYmd(addDays(sunday, -1)), sunday: toYmd(sunday) }
 }
