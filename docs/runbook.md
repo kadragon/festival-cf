@@ -30,6 +30,7 @@ cp .dev.vars.example .dev.vars
 | `pnpm preview` | Build + Workers runtime preview (port 8787) |
 | `pnpm build` | Next.js production build only |
 | `pnpm build:worker` | OpenNext → Workers bundle (output: `.open-next/`) |
+| `pnpm test` | Vitest unit tests (`lib/**/*.test.ts`) |
 | `pnpm deploy` | Build worker + deploy to Cloudflare |
 
 ## Type Check

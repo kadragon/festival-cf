@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 import { fetchFestivalList } from '@/lib/tourApi'
-import { todayStr, daysAgoStr, endOfWeekStr } from '@/lib/date'
-import { splitFestivalTiers } from '@/lib/festivals'
+import { todayStr, daysAgoStr, endOfWeekStr, weekendRange } from '@/lib/date'
+import { filterWeekendVisit, splitFestivalTiers } from '@/lib/festivals'
 import FestivalGrid from '@/components/FestivalGrid'
 import AreaFilter from '@/components/AreaFilter'
 import CardSkeleton from '@/components/CardSkeleton'
@@ -36,6 +36,13 @@ async function FestivalSection({ area }: { area: string }) {
     weekend
   )
 
+  const weekendDates = weekendRange()
+  const weekendVisitItems = filterWeekendVisit(
+    [...ongoingRes.items, ...upcomingRes.items],
+    weekendDates.saturday > today ? weekendDates.saturday : today,
+    weekendDates.sunday
+  )
+
   return (
     <FestivalGrid
       key={area}
@@ -44,6 +51,8 @@ async function FestivalSection({ area }: { area: string }) {
       upcomingItems={upcoming}
       initialHasMore={upcomingRes.totalCount > 20}
       area={area}
+      weekendVisitItems={weekendVisitItems}
+      weekend={weekendDates}
     />
   )
 }
