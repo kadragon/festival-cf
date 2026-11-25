@@ -1,17 +1,48 @@
+// All "today" logic is pinned to Korea Standard Time (UTC+9, no DST). The
+// Workers runtime runs in UTC, so using UTC getters directly would make the
+// date lag KST by a day between 00:00 and 09:00 KST.
+const KST_OFFSET_MS = 9 * 60 * 60 * 1000
+
+// A Date whose UTC fields hold the current KST wall-clock time.
+function kstNow(): Date {
+  return new Date(Date.now() + KST_OFFSET_MS)
+}
+
+function toYmd(d: Date): string {
+  return d.toISOString().slice(0, 10).replace(/-/g, '')
+}
+
+function addDays(d: Date, days: number): Date {
+  const next = new Date(d)
+  next.setUTCDate(next.getUTCDate() + days)
+  return next
+}
+
 export function todayStr(): string {
-  return new Date().toISOString().slice(0, 10).replace(/-/g, '')
+  return toYmd(kstNow())
 }
 
 export function daysAgoStr(days: number): string {
-  const d = new Date()
-  d.setUTCDate(d.getUTCDate() - days)
-  return d.toISOString().slice(0, 10).replace(/-/g, '')
+  return toYmd(addDays(kstNow(), -days))
 }
 
+/** This week's Sunday (KST); today when today is Sunday. */
 export function endOfWeekStr(): string {
-  const d = new Date()
-  d.setUTCDate(d.getUTCDate() + ((7 - d.getUTCDay()) % 7))
-  return d.toISOString().slice(0, 10).replace(/-/g, '')
+  const d = kstNow()
+  return toYmd(addDays(d, (7 - d.getUTCDay()) % 7))
+}
+
+/** Saturday and Sunday of the current Mon-Sun week in KST, as YYYYMMDD. */
+export function weekendRange(): { saturday: string; sunday: string } {
+  const d = kstNow()
+  const sunday = addDays(d, (7 - d.getUTCDay()) % 7)
+  return { saturday: toYmd(addDays(sunday, -1)), sunday: toYmd(sunday) }
+}
+
+/** YYYYMMDD → "MM.DD" */
+export function formatMonthDay(yyyymmdd: string): string {
+  if (!yyyymmdd || yyyymmdd.length < 8) return ''
+  return `${yyyymmdd.slice(4, 6)}.${yyyymmdd.slice(6, 8)}`
 }
 
 export function formatDate(yyyymmdd: string): string {

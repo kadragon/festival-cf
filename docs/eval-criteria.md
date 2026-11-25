@@ -2,7 +2,7 @@
 
 Generator and evaluator are **separate roles**. An agent grading its own work leans lenient — have an independent reviewer (a separate agent or session) grade against this rubric, never self-review for the pass/fail decision.
 
-No unit-test framework exists in this repo. The mechanical gate **matches CI** (`.github/workflows/ci.yml`): `pnpm exec tsc --noEmit` then `pnpm build:worker`. `pnpm build` alone is insufficient — it skips the Workers bundle, so a change can build under Next.js yet fail the OpenNext/Workers compile that CI and deploy enforce. Behavioural checks run against `pnpm preview` (Workers runtime on `http://localhost:8787`) or code review.
+Unit tests run with Vitest (`pnpm test`, files `lib/**/*.test.ts`). The mechanical gate **matches CI** (`.github/workflows/ci.yml`): `pnpm exec tsc --noEmit`, `pnpm test`, then `pnpm build:worker`. `pnpm build` alone is insufficient — it skips the Workers bundle, so a change can build under Next.js yet fail the OpenNext/Workers compile that CI and deploy enforce. Behavioural checks run against `pnpm preview` (Workers runtime on `http://localhost:8787`) or code review.
 
 ## Criteria
 
@@ -18,7 +18,7 @@ Does the feature work end-to-end against real TourAPI data (or documented proxy 
 | 2 | Partial — some acceptance criteria fail |
 | 1 | Does not build or core path broken |
 
-**How to test:** the CI gate (`pnpm exec tsc --noEmit && pnpm build:worker`) must exit 0; then `pnpm preview` and exercise the changed route/page, or review the data flow through `lib/tourApi.ts`.
+**How to test:** the CI gate (`pnpm exec tsc --noEmit && pnpm test && pnpm build:worker`) must exit 0; then `pnpm preview` and exercise the changed route/page, or review the data flow through `lib/tourApi.ts`.
 
 ### 2. Golden Principle Compliance (weight: 30%)
 
@@ -71,7 +71,7 @@ Write this as the pre-implementation agreement, before `code` workflow Step 3 (I
 
 **Out of scope:** {explicit exclusions}
 
-**Lint/test command:** `pnpm exec tsc --noEmit && pnpm build:worker`  (the CI gate; run `pnpm cf-typegen` first if `CloudflareEnv` types change)
+**Lint/test command:** `pnpm exec tsc --noEmit && pnpm test && pnpm build:worker`  (the CI gate; run `pnpm cf-typegen` first if `CloudflareEnv` types change)
 ```
 
 For a bundle, write **one acceptance checkbox per bundled item** — never merge into a single vague criterion.
@@ -80,7 +80,7 @@ For a bundle, write **one acceptance checkbox per bundled item** — never merge
 
 - Every criterion ≥ 3 (no dimension broken), AND
 - Weighted average ≥ 3.5, AND
-- the CI gate (`pnpm exec tsc --noEmit && pnpm build:worker`) exits 0.
+- the CI gate (`pnpm exec tsc --noEmit && pnpm test && pnpm build:worker`) exits 0.
 
 Any golden-principle violation (criterion 2 = 1) fails the sprint regardless of average — hard gate.
 
@@ -88,7 +88,7 @@ Any golden-principle violation (criterion 2 = 1) fails the sprint regardless of 
 
 1. Read the Sprint Contract acceptance criteria.
 2. Read this file for grading standards; read relevant `docs/` for context.
-3. Run the CI gate (`pnpm exec tsc --noEmit && pnpm build:worker`); exercise via `pnpm preview` or code review.
+3. Run the CI gate (`pnpm exec tsc --noEmit && pnpm test && pnpm build:worker`); exercise via `pnpm preview` or code review.
 4. List specific findings (pass/fail per contract item) **before** assigning any score — evidence first.
 5. Grade each criterion independently; do not average away a hard-gate failure.
 6. Below threshold → findings become `tasks.md` Review Backlog items → fix → re-evaluate once.

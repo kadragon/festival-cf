@@ -9,6 +9,7 @@
     "build:worker": "opennextjs-cloudflare build",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "test": "vitest run",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
@@ -28,6 +29,7 @@
     "@types/react-dom": "^19",
     "tailwindcss": "^4",
     "typescript": "^7",
+    "vitest": "^5.1.1",
     "wrangler": "^4.163.0"
   },
   "pnpm": {

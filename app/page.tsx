@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { fetchFestivalList } from '@/lib/tourApi'
-import { todayStr, daysAgoStr, endOfWeekStr } from '@/lib/date'
+import { todayStr, daysAgoStr, endOfWeekStr, weekendRange } from '@/lib/date'
 import { splitFestivalTiers } from '@/lib/festivals'
 import FestivalGrid from '@/components/FestivalGrid'
 import AreaFilter from '@/components/AreaFilter'
@@ -44,6 +44,7 @@ async function FestivalSection({ area }: { area: string }) {
       upcomingItems={upcoming}
       initialHasMore={upcomingRes.totalCount > 20}
       area={area}
+      weekend={weekendRange()}
     />
   )
 }
